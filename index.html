@@ -23,7 +23,6 @@
       padding-bottom: 40px;
     }
 
-    /* --- TOPO --- */
     .header {
       background: #081c33;
       padding: 14px 20px;
@@ -63,7 +62,6 @@
       width: 100%;
     }
 
-    /* --- INCENTIVO COM A MASCOTE CAPIVARA --- */
     .mascot-section {
       display: flex;
       align-items: flex-start;
@@ -99,7 +97,6 @@
       position: relative;
     }
 
-    /* Cursor piscando para a máquina de escrever */
     .cursor {
       display: inline-block;
       width: 2px;
@@ -114,7 +111,6 @@
       50% { opacity: 0; }
     }
 
-    /* --- VÍDEO DO YOUTUBE --- */
     .video-card {
       background: #134074;
       border-radius: 20px;
@@ -126,7 +122,7 @@
 
     .video-container {
       position: relative;
-      padding-bottom: 56.25%; /* Proporção 16:9 */
+      padding-bottom: 56.25%;
       height: 0;
     }
 
@@ -144,20 +140,13 @@
       font-size: 12px;
       color: #8da9c4;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    /* --- SESSÃO DE EXERCÍCIOS --- */
     .section-title {
       font-size: 18px;
       font-weight: 900;
       color: #ffb703;
       margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .exercise-card {
@@ -206,34 +195,31 @@
       color: #ffffff !important;
     }
 
-    /* Treino de Voz */
     .voice-box {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       padding: 15px;
       background: #eef4f8;
       border-radius: 16px;
     }
 
     .mic-btn {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       background: #ffb703;
       border: none;
       color: #0b2545;
-      font-size: 26px;
+      font-size: 24px;
       cursor: pointer;
       box-shadow: 0 6px 15px rgba(255, 183, 3, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s;
     }
 
-    .mic-btn:active { transform: scale(0.9); }
     .mic-btn.listening {
       animation: pulse 1s infinite;
       background: #e63946;
@@ -246,7 +232,6 @@
       100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
     }
 
-    /* --- TELA DE VITÓRIA / PARABÉNS --- */
     #victory-modal {
       position: fixed;
       top: 0;
@@ -278,20 +263,6 @@
       padding: 30px 20px;
       width: 100%;
       max-width: 340px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.5); }
-      100% { transform: scale(1); }
-    }
-
-    .victory-title {
-      font-size: 28px;
-      font-weight: 900;
-      color: #2ec4b6;
-      margin-top: 10px;
     }
 
     .btn-continue {
@@ -305,21 +276,18 @@
       margin-top: 20px;
       cursor: pointer;
       width: 100%;
-      box-shadow: 0 6px 16px rgba(255, 183, 3, 0.4);
     }
   </style>
 </head>
 <body>
 
-  <!-- TOPO -->
   <div class="header">
-    <button class="back-btn" onclick="history.back()">←</button>
+    <button class="back-btn" onclick="window.location.href='index.html'">←</button>
     <div class="header-title">Aula 1: O Segredo dos Sons</div>
   </div>
 
   <div class="container">
 
-    <!-- MASCOTE + ESCRITA EM MÁQUINA DE ESCREVER -->
     <div class="mascot-section">
       <div class="capybara-avatar">🦫</div>
       <div class="speech-bubble">
@@ -327,88 +295,104 @@
       </div>
     </div>
 
-    <!-- VÍDEO DO YOUTUBE COM MINUTO EXATO (?start=345) -->
+    <!-- Vídeo com início direto nos pontos de pronúncia (start=345s) -->
     <div class="video-card">
       <div class="video-container">
-        <!-- Inicia direto aos 5:45 (345s) onde a professora explica a letra Ñ e o som do NH -->
         <iframe src="https://www.youtube.com/embed/HLkK5_-jV_M?start=345&enablejsapi=1" allowfullscreen></iframe>
       </div>
       <div class="video-info">
-        ⏱️ Trecho Essencial: 3 minutos | Canal: Vamos a Hablar Español
+        ⏱️ Assista aos 3 minutos principais | Canal: Vamos a Hablar Español
       </div>
     </div>
 
-    <!-- EXERCÍCIOS DE FIXAÇÃO -->
-    <div class="section-title">🎯 Desafio de Fixação</div>
+    <div class="section-title">🎯 Desafios da Aula (5 Exercícios)</div>
 
-    <!-- Exercício 1: Múltipla Escolha -->
+    <!-- EXERCÍCIO 1 -->
     <div class="exercise-card" id="q1">
-      <div class="question-text">1. Qual é o som da letra "Ñ" no espanhol (ex: España)?</div>
+      <div class="question-text">1. O que significa o verbo "DELETREAR" mencionado na aula?</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Som de "N" duplo (NN)</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1')">Som idêntico ao "NH" do português</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Som de "M" mudo</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Deletar uma mensagem</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1')">Soletrar uma palavra</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Desenhar uma letra</button>
       </div>
     </div>
 
-    <!-- Exercício 2: Associação / Palavra Chave -->
+    <!-- EXERCÍCIO 2 -->
     <div class="exercise-card" id="q2">
-      <div class="question-text">2. Na maioria dos países hispânicos, como se pronuncia a letra "V" na palavra "Vaca"?</div>
+      <div class="question-text">2. Se você for à farmácia pedir remédio para "MIGRAÑA", qual é o problema?</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2')">Com som de "B" (Baca)</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Com som de "F" (Faca)</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Com som de "V" bem forte</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Dor de garganta</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2')">Enxaqueca / Dor de cabeça</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Febre alta</button>
       </div>
     </div>
 
-    <!-- Exercício 3: Treino de Voz / Microfone -->
+    <!-- EXERCÍCIO 3 -->
     <div class="exercise-card" id="q3">
-      <div class="question-text">3. Pronúncia: Clique no microfone e diga a palavra "MAÑANA" em voz alta:</div>
+      <div class="question-text">3. Como se pronuncia a letra "V" na palavra "VACA" na maioria dos países?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q3')">Com som suave de "B" (Baca)</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Com som de "F" (Faca)</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Com som de "W"</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 4 (MICROFONE) -->
+    <div class="exercise-card" id="q4">
+      <div class="question-text">4. Pronúncia 1: Diga a palavra "MAÑANA" no microfone:</div>
       <div class="voice-box">
-        <button class="mic-btn" id="mic-btn" onclick="startVoiceRecognition()">🎙️</button>
-        <div id="voice-status" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+        <button class="mic-btn" id="mic1-btn" onclick="startVoiceRecognition('mañana', 'mic1-btn', 'status1', 'q4')">🎙️</button>
+        <div id="status1" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 5 (MICROFONE) -->
+    <div class="exercise-card" id="q5">
+      <div class="question-text">5. Pronúncia 2: Pratique a vibração do R dizendo "CARRETERA":</div>
+      <div class="voice-box">
+        <button class="mic-btn" id="mic2-btn" onclick="startVoiceRecognition('carretera', 'mic2-btn', 'status2', 'q5')">🎙️</button>
+        <div id="status2" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
       </div>
     </div>
 
   </div>
 
-  <!-- MODAL DE VITÓRIA / PARABÉNS -->
+  <!-- MODAL DE VITÓRIA -->
   <div id="victory-modal">
     <div class="victory-box">
       <div style="font-size: 60px;">🏆</div>
-      <div class="victory-title">¡Felicitaciones!</div>
+      <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
       <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
-        Você concluiu sua primeira aula de 10 minutos com sucesso!
+        Você completou todos os exercícios e treinou sua pronúncia!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
-        🌟 +50 XP Ganhos | 1 Dia de Trilha
+        🌟 +100 XP Ganhos | Progresso Salvo
       </div>
       <button class="btn-continue" onclick="window.location.href='index.html'">Voltar para a Trilha</button>
     </div>
   </div>
 
-  <!-- LÓGICA E SINTETIZADOR DE ÁUDIO -->
   <script>
-    // 1. MÁQUINA DE ESCREVER (TEXTO PROGRESSIVO DA CAPIVARA)
-    const textToType = "¡Hola! Assista a este trecho rápido do vídeo para aprender o segredo dos sons do espanhol e resolva os 3 desafios abaixo. ¡Vamos!";
+    // 1. MÁQUINA DE ESCREVER
+    const textToType = "¡Hola! Preste atenção nos termos da aula (deletrear, migraña, carretera) e resolva os 5 desafios de fixação abaixo. ¡Tú puedes!";
     let typeIndex = 0;
 
     function typeWriter() {
       if (typeIndex < textToType.length) {
         document.getElementById("typed-text").innerHTML += textToType.charAt(typeIndex);
         typeIndex++;
-        setTimeout(typeWriter, 35); // Velocidade da digitação em ms
+        setTimeout(typeWriter, 30);
       }
     }
     window.addEventListener('load', typeWriter);
 
-    // 2. CONTROLE DOS EXERCÍCIOS
+    // 2. CONTROLE DE RESPOSTAS
     let answeredCorrectly = 0;
+    const totalQuestions = 5;
 
     function checkAnswer(btn, isCorrect, qId) {
       const card = document.getElementById(qId);
       const buttons = card.querySelectorAll('.opt-btn');
-      
       buttons.forEach(b => b.disabled = true);
 
       if (isCorrect) {
@@ -417,22 +401,20 @@
       } else {
         btn.classList.add('wrong');
       }
-
-      checkLessonCompletion();
+      checkCompletion();
     }
 
-    // 3. RECONHECIMENTO DE VOZ (WEB SPEECH API)
-    function startVoiceRecognition() {
-      const micBtn = document.getElementById('mic-btn');
-      const statusText = document.getElementById('voice-status');
+    // 3. RECONHECIMENTO DE VOZ MULTIUSO
+    function startVoiceRecognition(expectedWord, btnId, statusId, qId) {
+      const micBtn = document.getElementById(btnId);
+      const statusText = document.getElementById(statusId);
 
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        // Se o navegador não suportar voz, aprova automaticamente para não travar o teste
         statusText.innerHTML = "✅ Pronúncia aceita!";
         statusText.style.color = "#2ec4b6";
         micBtn.disabled = true;
         answeredCorrectly++;
-        checkLessonCompletion();
+        checkCompletion();
         return;
       }
 
@@ -441,7 +423,7 @@
       recognition.lang = 'es-ES';
 
       micBtn.classList.add('listening');
-      statusText.innerHTML = "Ouvindo... Fale 'Mañana'";
+      statusText.innerHTML = `Ouvindo... Fale "${expectedWord}"`;
 
       recognition.start();
 
@@ -449,62 +431,67 @@
         const transcript = event.results[0][0].transcript.toLowerCase();
         micBtn.classList.remove('listening');
 
-        if (transcript.includes('mañana') || transcript.includes('manana')) {
-          statusText.innerHTML = `✅ Perfeito! Você disse: "${transcript}"`;
+        if (transcript.includes(expectedWord.toLowerCase()) || transcript.includes(expectedWord.replace('ñ','n'))) {
+          statusText.innerHTML = `✅ Perfeito! (${transcript})`;
           statusText.style.color = "#2ec4b6";
           micBtn.disabled = true;
           answeredCorrectly++;
-          checkLessonCompletion();
+          checkCompletion();
         } else {
-          statusText.innerHTML = `Ouvi "${transcript}". Tente novamente!`;
+          statusText.innerHTML = `Ouvi "${transcript}". Tente de novo!`;
           statusText.style.color = "#e63946";
         }
       };
 
       recognition.onerror = function() {
         micBtn.classList.remove('listening');
-        statusText.innerHTML = "Não ouvi bem. Clique para tentar de novo.";
+        statusText.innerHTML = "Não ouvi bem. Toque para tentar.";
       };
     }
 
-    // 4. VERIFICA SE TERMINOU A AULA E DISPARA VITÓRIA
-    function checkLessonCompletion() {
-      if (answeredCorrectly >= 3) {
+    // 4. SALVAR PROGRESSO E DISPARAR VITÓRIA
+    function checkCompletion() {
+      if (answeredCorrectly >= totalQuestions) {
+        // Salva XP e Dias no localStorage
+        saveUserProgress(100);
+
         setTimeout(() => {
           playVictorySound();
           document.getElementById('victory-modal').classList.add('show');
-        }, 600);
+        }, 500);
       }
     }
 
-    // 5. SOM DE VITÓRIA SINTETIZADO (0 KB - SINTETIZADOR WEB AUDIO API)
+    function saveUserProgress(xpEarned) {
+      let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
+      let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
+
+      currentXP += xpEarned;
+
+      localStorage.setItem('faleandgo_xp', currentXP);
+      localStorage.setItem('faleandgo_streak', currentStreak);
+    }
+
+    // 5. SOM SINTETIZADO (0 KB)
     function playVictorySound() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const ctx = new AudioContext();
-        
-        // Acorde triunfal (Dó - Mi - Sol - Dó Alto)
         const notes = [261.63, 329.63, 392.00, 523.25];
         
         notes.forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          
           osc.type = 'triangle';
           osc.frequency.value = freq;
-          
           gain.gain.setValueAtTime(0.3, ctx.currentTime + index * 0.12);
           gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + index * 0.12 + 0.4);
-          
           osc.connect(gain);
           gain.connect(ctx.destination);
-          
           osc.start(ctx.currentTime + index * 0.12);
           osc.stop(ctx.currentTime + index * 0.12 + 0.4);
         });
-      } catch (e) {
-        console.log("Áudio não suportado ou bloqueado.");
-      }
+      } catch (e) {}
     }
   </script>
 </body>
