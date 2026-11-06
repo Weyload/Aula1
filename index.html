@@ -480,12 +480,45 @@
     }
 
     // Síntese de voz nativa (Para falar a pronúncia correta quando o aluno erra)
+   // Solicita fala nativa ao Kodular ou usa a síntese Web
     function hablarPronunciacionCorrecta(texto) {
-      if ('speechSynthesis' in window) {
+      if (window.AppInventor) {
+        window.AppInventor.setWebViewString("Falar_" + texto);
+      } else if ('speechSynthesis' in window) {
         const synth = window.speechSynthesis;
         const utterThis = new SpeechSynthesisUtterance(texto);
         utterThis.lang = 'es-ES';
         synth.speak(utterThis);
+      }
+    }
+
+    function processarResultadoVoz(transcript) {
+      const statusText = document.getElementById(statusIdAtual);
+      const micBtn = document.getElementById(btnIdAtual);
+
+      let normTarget = palavraEsperadaAtual.toLowerCase().trim()
+        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+        
+      let normTranscript = transcript.toLowerCase().trim()
+        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
+        .replace(/\bestou\b/g, "estoy")
+        .replace(/\bola\b/g, "hola")
+        .replace(/\bdise\b/g, "dice")
+        .replace(/\bgrasias\b/g, "gracias");
+
+      if (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n'))) {
+        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
+        statusText.style.color = "#2ec4b6";
+        if (micBtn) micBtn.disabled = true;
+        
+        if (typeof answeredCorrectly !== 'undefined') {
+          answeredCorrectly++;
+          checkCompletion();
+        }
+      } else {
+        statusText.innerHTML = `Ouvi "${transcript}". 🔊 Ouça a pronúncia correta!`;
+        statusText.style.color = "#e63946";
+        hablarPronunciacionCorrecta(palavraEsperadaAtual);
       }
     }
 
