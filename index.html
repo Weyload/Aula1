@@ -404,17 +404,30 @@
       checkCompletion();
     }
 
-    // 3. RECONHECIMENTO DE VOZ MULTIUSO
-    function startVoiceRecognition(expectedWord, btnId, statusId, qId) {
-      const micBtn = document.getElementById(btnId);
-      const statusText = document.getElementById(statusId);
+  // 3. RECONHECIMENTO DE VOZ MULTIUSO
+    let palavraEsperadaAtual = '';
+    let btnIdAtual = '';
+    let statusIdAtual = '';
+    let qIdAtual = '';
 
+    function startVoiceRecognition(expectedText, btnId, statusId, qId) {
+      palavraEsperadaAtual = expectedText;
+      btnIdAtual = btnId;
+      statusIdAtual = statusId;
+      qIdAtual = qId;
+
+      // Se estiver rodando dentro do aplicativo APK (Kodular)
+      if (window.AppInventor) {
+        document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
+        document.getElementById(statusId).style.color = "#ffb703";
+        // Envia um sinal com carimbo de tempo para o Kodular detectar TODOS os cliques
+        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
+        return;
+      }
+
+      // Se rodar no computador ou fora do APK
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        statusText.innerHTML = "✅ Pronúncia aceita!";
-        statusText.style.color = "#2ec4b6";
-        micBtn.disabled = true;
-        answeredCorrectly++;
-        checkCompletion();
+        processarResultadoVoz(expectedText);
         return;
       }
 
@@ -422,31 +435,58 @@
       const recognition = new SpeechRecognition();
       recognition.lang = 'es-ES';
 
+      const micBtn = document.getElementById(btnId);
       micBtn.classList.add('listening');
-      statusText.innerHTML = `Ouvindo... Fale "${expectedWord}"`;
+      document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${expectedText}"`;
 
       recognition.start();
 
       recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.toLowerCase();
         micBtn.classList.remove('listening');
-
-        if (transcript.includes(expectedWord.toLowerCase()) || transcript.includes(expectedWord.replace('ñ','n'))) {
-          statusText.innerHTML = `✅ Perfeito! (${transcript})`;
-          statusText.style.color = "#2ec4b6";
-          micBtn.disabled = true;
-          answeredCorrectly++;
-          checkCompletion();
-        } else {
-          statusText.innerHTML = `Ouvi "${transcript}". Tente de novo!`;
-          statusText.style.color = "#e63946";
-        }
+        processarResultadoVoz(event.results[0][0].transcript);
       };
 
       recognition.onerror = function() {
         micBtn.classList.remove('listening');
-        statusText.innerHTML = "Não ouvi bem. Toque para tentar.";
+        document.getElementById(statusId).innerHTML = "Não ouvi bem. Clique para tentar.";
+        hablarPronunciacionCorrecta(expectedText);
       };
+    }
+
+    // Função que o Kodular vai chamar para devolver o texto gravado
+    function receberTextoVoz(textoOuvido) {
+      processarResultadoVoz(textoOuvido);
+    }
+
+    function processarResultadoVoz(transcript) {
+      const statusText = document.getElementById(statusIdAtual);
+      const micBtn = document.getElementById(btnIdAtual);
+
+      const normalizedTarget = palavraEsperadaAtual.toLowerCase().replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+      const normalizedTranscript = transcript.toLowerCase().replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+
+      if (normalizedTranscript.includes(normalizedTarget) || normalizedTranscript.includes(normalizedTarget.replace('ñ','n'))) {
+        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
+        statusText.style.color = "#2ec4b6";
+        if (micBtn) micBtn.disabled = true;
+        
+        answeredCorrectly++;
+        checkCompletion();
+      } else {
+        statusText.innerHTML = `Ouvi "${transcript}". 🔊 Ouça a pronúncia correta!`;
+        statusText.style.color = "#e63946";
+        hablarPronunciacionCorrecta(palavraEsperadaAtual);
+      }
+    }
+
+    // Síntese de voz nativa (Para falar a pronúncia correta quando o aluno erra)
+    function hablarPronunciacionCorrecta(texto) {
+      if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(texto);
+        utterThis.lang = 'es-ES';
+        synth.speak(utterThis);
+      }
     }
 
     // 4. SALVAR PROGRESSO E DISPARAR VITÓRIA
