@@ -6,304 +6,58 @@
   <title>Aula 1 - Alfabeto e Pronúncia | Fale&Go</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Nunito', sans-serif;
-      user-select: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
+    body { background-color: #0b2545; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 40px; }
+    
+    .header { background: #081c33; padding: 14px 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+    .back-btn { background: rgba(255,255,255,0.1); border: none; color: #ffb703; font-size: 20px; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .header-title { font-size: 18px; font-weight: 800; color: #ffffff; }
+    
+    .container { padding: 20px; max-width: 500px; margin: 0 auto; width: 100%; }
 
-    body {
-      background-color: #0b2545;
-      color: #ffffff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 40px;
-    }
+    .mascot-section { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+    .capybara-avatar { width: 70px; height: 70px; background: #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); flex-shrink: 0; border: 3px solid #ffffff; }
+    .speech-bubble { background: #ffffff; color: #0b2545; padding: 14px 18px; border-radius: 18px; border-top-left-radius: 4px; font-size: 14px; font-weight: 700; line-height: 1.4; box-shadow: 0 6px 16px rgba(0,0,0,0.2); min-height: 70px; position: relative; }
+    .cursor { display: inline-block; width: 2px; height: 14px; background-color: #0b2545; margin-left: 2px; animation: blink 0.7s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    .header {
-      background: #081c33;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+    .video-card { background: #134074; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); margin-bottom: 25px; border: 2px solid #1d5393; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .video-info { padding: 12px 16px; font-size: 12px; color: #8da9c4; font-weight: 700; }
 
-    .back-btn {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #ffb703;
-      font-size: 20px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .section-title { font-size: 18px; font-weight: 900; color: #ffb703; margin-bottom: 15px; }
 
-    .header-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-    }
+    .exercise-card { background: #ffffff; color: #0b2545; border-radius: 20px; padding: 18px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    .question-text { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+    
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .opt-btn { background: #eef4f8; border: 2px solid #d0e1f9; padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 14px; color: #0b2545; cursor: pointer; text-align: left; transition: all 0.2s; }
+    .opt-btn.correct { background: #2ec4b6 !important; border-color: #2ec4b6 !important; color: #ffffff !important; }
+    .opt-btn.wrong { background: #e63946 !important; border-color: #e63946 !important; color: #ffffff !important; }
 
-    .container {
-      padding: 20px;
-      max-width: 500px;
-      margin: 0 auto;
-      width: 100%;
-    }
+    .voice-box { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 15px; background: #eef4f8; border-radius: 16px; }
+    .mic-btn { width: 55px; height: 55px; border-radius: 50%; background: #ffb703; border: none; color: #0b2545; font-size: 24px; cursor: pointer; box-shadow: 0 6px 15px rgba(255, 183, 3, 0.4); display: flex; align-items: center; justify-content: center; }
+    .mic-btn.listening { animation: pulse 1s infinite; background: #e63946; color: #fff; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); } }
 
-    .mascot-section {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+    .target-word.alt-active { color: #ffb703; background: rgba(255, 183, 3, 0.2); padding: 2px 8px; border-radius: 6px; border: 1px dashed #ffb703; font-weight: 900; }
 
-    .capybara-avatar {
-      width: 70px;
-      height: 70px;
-      background: #ffb703;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-      flex-shrink: 0;
-      border: 3px solid #ffffff;
-      overflow: hidden;
-    }
-
-    .capybara-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .speech-bubble {
-      background: #ffffff;
-      color: #0b2545;
-      padding: 14px 18px;
-      border-radius: 18px;
-      border-top-left-radius: 4px;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.4;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-      min-height: 70px;
-      position: relative;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 14px;
-      background-color: #0b2545;
-      margin-left: 2px;
-      animation: blink 0.7s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .video-card {
-      background: #134074;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      margin-bottom: 25px;
-      border: 2px solid #1d5393;
-    }
-
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-    }
-
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    .video-info {
-      padding: 12px 16px;
-      font-size: 12px;
-      color: #8da9c4;
-      font-weight: 700;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 900;
-      color: #ffb703;
-      margin-bottom: 15px;
-    }
-
-    .exercise-card {
-      background: #ffffff;
-      color: #0b2545;
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 20px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    }
-
-    .question-text {
-      font-size: 15px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-    .options-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .opt-btn {
-      background: #eef4f8;
-      border: 2px solid #d0e1f9;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 14px;
-      color: #0b2545;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.2s;
-    }
-
-    .opt-btn.correct {
-      background: #2ec4b6 !important;
-      border-color: #2ec4b6 !important;
-      color: #ffffff !important;
-    }
-
-    .opt-btn.wrong {
-      background: #e63946 !important;
-      border-color: #e63946 !important;
-      color: #ffffff !important;
-    }
-
-    .voice-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 15px;
-      background: #eef4f8;
-      border-radius: 16px;
-    }
-
-    .mic-btn {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: #ffb703;
-      border: none;
-      color: #0b2545;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 6px 15px rgba(255, 183, 3, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .mic-btn.listening {
-      animation: pulse 1s infinite;
-      background: #e63946;
-      color: #fff;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
-      70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
-    }
-
-    .target-word.alt-active {
-      color: #ffb703;
-      background: rgba(255, 183, 3, 0.2);
-      padding: 2px 8px;
-      border-radius: 6px;
-      border: 1px dashed #ffb703;
-      font-weight: 900;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .modal-overlay.show {
-      display: flex;
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-box {
-      background: #ffffff;
-      color: #0b2545;
-      padding: 24px;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 380px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .modal-overlay.show { display: flex; opacity: 1; visibility: visible; }
+    .modal-box { background: #ffffff; color: #0b2545; padding: 24px; border-radius: 20px; text-align: center; max-width: 380px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
     .modal-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
     .modal-desc { font-size: 14px; color: #5c677d; font-weight: 700; line-height: 1.4; }
-
-    .btn-primary {
-      background: #ffb703; color: #0b2545; border: none; padding: 12px;
-      border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer;
-    }
     
-    .btn-secondary {
-      background: #e1e9f0; color: #0b2545; border: none; padding: 12px;
-      border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer;
-    }
-
+    .btn-primary { background: #ffb703; color: #0b2545; border: none; padding: 12px; border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer; }
+    .btn-secondary { background: #e1e9f0; color: #0b2545; border: none; padding: 12px; border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer; }
     #victory-modal .modal-box { max-width: 340px; }
-
-    .btn-continue {
-      background: #ffb703; color: #0b2545; border: none; padding: 14px 28px;
-      border-radius: 50px; font-weight: 900; font-size: 16px; margin-top: 20px;
-      cursor: pointer; width: 100%;
-    }
+    .btn-continue { background: #ffb703; color: #0b2545; border: none; padding: 14px 28px; border-radius: 50px; font-weight: 900; font-size: 16px; margin-top: 20px; cursor: pointer; width: 100%; }
   </style>
 </head>
 <body>
 
-  <!-- TOPO COM BOTÃO DE SAÍDA -->
+  <!-- TOPO COM BOTÃO DE SAÍDA (Abre o Modal de Salvar) -->
   <div class="header">
     <button class="back-btn" onclick="confirmExit()">←</button>
     <div class="header-title">Aula 1: O Segredo dos Sons</div>
@@ -311,11 +65,9 @@
 
   <div class="container">
 
-    <!-- MASCOTE E MENSAGEM -->
+    <!-- MASCOTE E MENSAGEM (Com a Capivara Emoji Segura) -->
     <div class="mascot-section">
-      <div class="capybara-avatar">
-        <img src="capivara.png" alt="Capivara">
-      </div>
+      <div class="capybara-avatar">🦫</div>
       <div class="speech-bubble">
         <span id="typed-text"></span><span class="cursor"></span>
       </div>
@@ -376,3 +128,253 @@
 
     <!-- EXERCÍCIO 5 (MICROFONE) -->
     <div class="exercise-card" id="q5">
+      <div class="question-text">
+        5. Pronúncia 2: Pratique a vibração do R dizendo "<span id="word-display-q5" class="target-word">CARRETERA</span>":
+      </div>
+      <div class="voice-box">
+        <button class="mic-btn" id="mic2-btn" onclick="startVoiceRecognition('carretera', 'mic2-btn', 'status2', 'q5', 'hola')">🎙️</button>
+        <div id="status2" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL DE VITÓRIA -->
+  <div id="victory-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div style="font-size: 60px;">🏆</div>
+      <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
+      <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
+        Você completou todos os exercícios e treinou sua pronúncia!
+      </p>
+      <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
+        🌟 +100 XP Ganhos | Progresso Salvo
+      </div>
+      <button class="btn-continue" onclick="window.location.href='aulas_basicas.html'">Voltar para a Trilha</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO DE SAÍDA (SALVAR PROGRESSO) -->
+  <div id="exit-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+      <div class="modal-title">Ainda há exercícios incompletos!</div>
+      <div class="modal-desc">Deseja terminar depois? Seu progresso atual ficará salvo.</div>
+      <div style="display: flex; gap: 10px; width: 100%; margin-top: 15px;">
+        <button class="btn-secondary" onclick="closeExitModal()">Não, continuar</button>
+        <button class="btn-primary" onclick="exitLesson()">Sim, sair</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INÍCIO DO CÓDIGO JAVASCRIPT CORRIGIDO -->
+  <script>
+    // 1. MÁQUINA DE ESCREVER
+    const textToType = "¡Hola! Nossa primeira aula!! Vamos começar por aqui. Assista à aula e depois responda aos exercícios. ¡Tú puedes!";
+    let typeIndex = 0;
+
+    function typeWriter() {
+      if (typeIndex < textToType.length) {
+        document.getElementById("typed-text").innerHTML += textToType.charAt(typeIndex);
+        typeIndex++;
+        setTimeout(typeWriter, 30);
+      }
+    }
+    window.addEventListener('load', typeWriter);
+
+    // 2. VERIFICAR MÚLTIPLA ESCOLHA (Colore de Azul/Vermelho)
+    let answeredCorrectly = 0;
+    const totalQuestions = 5;
+    const questionAttempts = {};
+
+    function checkAnswer(btn, isCorrect, qId) {
+      const card = document.getElementById(qId);
+      const buttons = card.querySelectorAll('.opt-btn');
+      
+      // Desativa os outros botões
+      buttons.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        answeredCorrectly++;
+      } else {
+        btn.classList.add('wrong');
+      }
+      checkCompletion();
+    }
+
+    // 3. RECONHECIMENTO DE VOZ (Com troca de palavra após 2 erros)
+    let palavraEsperadaAtual = '';
+    let palavraAlternativaAtual = '';
+    let btnIdAtual = '';
+    let statusIdAtual = '';
+    let qIdAtual = '';
+
+    function startVoiceRecognition(expectedText, btnId, statusId, qId, altWord = '') {
+      if (questionAttempts[qId] && questionAttempts[qId].switched) {
+        palavraEsperadaAtual = questionAttempts[qId].currentWord;
+      } else {
+        palavraEsperadaAtual = expectedText;
+        palavraAlternativaAtual = altWord;
+      }
+
+      btnIdAtual = btnId;
+      statusIdAtual = statusId;
+      qIdAtual = qId;
+
+      if (window.AppInventor) {
+        document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
+        document.getElementById(statusId).style.color = "#ffb703";
+        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
+        return;
+      }
+
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        processarResultadoVoz(expectedText);
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'es-ES';
+
+      const micBtn = document.getElementById(btnId);
+      micBtn.classList.add('listening');
+      document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${palavraEsperadaAtual.toUpperCase()}"`;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        micBtn.classList.remove('listening');
+        processarResultadoVoz(event.results[0][0].transcript);
+      };
+
+      recognition.onerror = function() {
+        micBtn.classList.remove('listening');
+        processarResultadoVoz(""); 
+      };
+    }
+
+    function receberTextoVoz(textoOuvido) {
+      processarResultadoVoz(textoOuvido);
+    }
+
+    function processarResultadoVoz(transcript) {
+      const statusText = document.getElementById(statusIdAtual);
+      const micBtn = document.getElementById(btnIdAtual);
+
+      let normTarget = palavraEsperadaAtual.toLowerCase().trim()
+        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+        
+      let normTranscript = transcript.toLowerCase().trim()
+        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
+        .replace(/\bestou\b/g, "estoy").replace(/\bola\b/g, "hola")
+        .replace(/\bdise\b/g, "dice").replace(/\bgrasias\b/g, "gracias");
+
+      if (transcript !== "" && (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n')))) {
+        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
+        statusText.style.color = "#2ec4b6";
+        if (micBtn) micBtn.disabled = true;
+        
+        answeredCorrectly++;
+        checkCompletion();
+      } else {
+        if (!questionAttempts[qIdAtual]) {
+          questionAttempts[qIdAtual] = { count: 0, switched: false, currentWord: palavraEsperadaAtual };
+        }
+        questionAttempts[qIdAtual].count++;
+
+        if (questionAttempts[qIdAtual].count >= 2 && palavraAlternativaAtual && !questionAttempts[qIdAtual].switched) {
+          questionAttempts[qIdAtual].switched = true;
+          questionAttempts[qIdAtual].currentWord = palavraAlternativaAtual;
+          palavraEsperadaAtual = palavraAlternativaAtual;
+
+          const wordElement = document.getElementById(`word-display-${qIdAtual}`);
+          if (wordElement) {
+            wordElement.innerHTML = palavraAlternativaAtual.toUpperCase() + " 🔄";
+            wordElement.classList.add("alt-active");
+          }
+
+          statusText.innerHTML = `Facilitamos para você! Diga "${palavraAlternativaAtual.toUpperCase()}" 🔊`;
+          statusText.style.color = "#ffb703";
+        } else {
+          statusText.innerHTML = transcript ? `Ouvi "${transcript}". 🔊 Ouça a pronúncia!` : "Não ouvi bem. 🔊 Ouça a pronúncia!";
+          statusText.style.color = "#e63946";
+        }
+
+        hablarPronunciacionCorrecta(palavraEsperadaAtual);
+      }
+    }
+
+    function hablarPronunciacionCorrecta(texto) {
+      if (window.AppInventor) {
+        window.AppInventor.setWebViewString("Falar_" + texto);
+      } else if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(texto);
+        utterThis.lang = 'es-ES';
+        synth.speak(utterThis);
+      }
+    }
+
+    // 4. CONTROLES DE SAÍDA E SALVAMENTO DE XP
+    function confirmExit() {
+      if (answeredCorrectly < totalQuestions) {
+        document.getElementById('exit-modal').classList.add('show');
+      } else {
+        window.location.href = 'aulas_basicas.html';
+      }
+    }
+
+    function closeExitModal() {
+      document.getElementById('exit-modal').classList.remove('show');
+    }
+
+    function exitLesson() {
+      if (answeredCorrectly > 0) {
+        saveUserProgress(answeredCorrectly * 20); // 20 XP por questão respondida
+      }
+      window.location.href = 'aulas_basicas.html';
+    }
+
+    function checkCompletion() {
+      if (answeredCorrectly >= totalQuestions) {
+        saveUserProgress(100);
+        setTimeout(() => {
+          playVictorySound();
+          document.getElementById('victory-modal').classList.add('show');
+        }, 500);
+      }
+    }
+
+    function saveUserProgress(xpEarned) {
+      let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
+      let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
+      currentXP += xpEarned;
+      localStorage.setItem('faleandgo_xp', currentXP);
+      localStorage.setItem('faleandgo_streak', currentStreak);
+    }
+
+    function playVictorySound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        
+        notes.forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.3, ctx.currentTime + index * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + index * 0.12 + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + index * 0.12);
+          osc.stop(ctx.currentTime + index * 0.12 + 0.4);
+        });
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>
