@@ -13,7 +13,23 @@
       font-family: 'Nunito', sans-serif;
       user-select: none;
     }
+<div class="header">
+  <button class="back-btn" onclick="confirmExit()">←</button>
+  <div class="header-title">Aula 1: Alfabeto & Sons</div>
+</div>
 
+<!-- MODAL DE CONFIRMAÇÃO DE SAÍDA (Adicionar antes do </body>) -->
+<div id="exit-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+    <div class="modal-title">Ainda há exercícios incompletos!</div>
+    <div class="modal-desc">Deseja terminar depois? Seu progresso atual ficará salvo.</div>
+    <div style="display: flex; gap: 10px; width: 100%; margin-top: 15px;">
+      <button class="btn-secondary" onclick="closeExitModal()">Não, continuar</button>
+      <button class="btn-primary" onclick="exitLesson()">Sim, sair</button>
+    </div>
+  </div>
+</div>
     body {
       background-color: #0b2545;
       color: #ffffff;
@@ -280,7 +296,48 @@
   </style>
 </head>
 <body>
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
 
+.modal-box {
+  background: #ffffff;
+  color: #0b2545;
+  padding: 24px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.modal-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+.modal-desc { font-size: 14px; color: #5c677d; font-weight: 700; line-height: 1.4; }
+
+.btn-primary {
+  background: #ffb703; color: #0b2545; border: none; padding: 12px;
+  border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer;
+}
+.btn-secondary {
+  background: #e1e9f0; color: #0b2545; border: none; padding: 12px;
+  border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer;
+}
+/* Destaque visual quando a palavra muda após 2 erros */
+.target-word.alt-active {
+  color: #ffb703;
+  background: rgba(255, 183, 3, 0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px dashed #ffb703;
+  font-weight: 900;
+}
   <div class="header">
     <button class="back-btn" onclick="window.location.href='index.html'">←</button>
     <div class="header-title">Aula 1: O Segredo dos Sons</div>
@@ -373,199 +430,172 @@
   </div>
 
   <script>
-    // 1. MÁQUINA DE ESCREVER
-    const textToType = "¡Hola! Ual nossa primeira aula!! Uhuuu. Vamos começar por aqui. Assista a aula e depois responda aos exercícios. Depois vamos fazer algumas perguntinhas. ¡Tú puedes!";
-    let typeIndex = 0;
+    <script>
+  // Contadores de Progresso e Erros
+  let answeredCorrectly = 0;
+  const totalQuestions = 5;
+  const questionAttempts = {}; // Grava erros de cada questão
 
-    function typeWriter() {
-      if (typeIndex < textToType.length) {
-        document.getElementById("typed-text").innerHTML += textToType.charAt(typeIndex);
-        typeIndex++;
-        setTimeout(typeWriter, 30);
-      }
-    }
-    window.addEventListener('load', typeWriter);
+  let palavraEsperadaAtual = '';
+  let palavraAlternativaAtual = '';
+  let btnIdAtual = '';
+  let statusIdAtual = '';
+  let qIdAtual = '';
 
-    // 2. CONTROLE DE RESPOSTAS
-    let answeredCorrectly = 0;
-    const totalQuestions = 5;
-
-    function checkAnswer(btn, isCorrect, qId) {
-      const card = document.getElementById(qId);
-      const buttons = card.querySelectorAll('.opt-btn');
-      buttons.forEach(b => b.disabled = true);
-
-      if (isCorrect) {
-        btn.classList.add('correct');
-        answeredCorrectly++;
-      } else {
-        btn.classList.add('wrong');
-      }
-      checkCompletion();
-    }
-
-  // 3. RECONHECIMENTO DE VOZ MULTIUSO
-    let palavraEsperadaAtual = '';
-    let btnIdAtual = '';
-    let statusIdAtual = '';
-    let qIdAtual = '';
-
-    function startVoiceRecognition(expectedText, btnId, statusId, qId) {
+  // 1. RECONHECIMENTO DE VOZ COM ALTERNÂNCIA DE PALAVRA
+  function startVoiceRecognition(expectedText, btnId, statusId, qId, altWord = '') {
+    // Se a questão já foi alterada para a palavra alternativa anteriormente, mantemos a nova
+    if (questionAttempts[qId] && questionAttempts[qId].switched) {
+      palavraEsperadaAtual = questionAttempts[qId].currentWord;
+    } else {
       palavraEsperadaAtual = expectedText;
-      btnIdAtual = btnId;
-      statusIdAtual = statusId;
-      qIdAtual = qId;
-
-      // Se estiver rodando dentro do aplicativo APK (Kodular)
-      if (window.AppInventor) {
-        document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
-        document.getElementById(statusId).style.color = "#ffb703";
-        // Envia um sinal com carimbo de tempo para o Kodular detectar TODOS os cliques
-        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
-        return;
-      }
-
-      // Se rodar no computador ou fora do APK
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        processarResultadoVoz(expectedText);
-        return;
-      }
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'es-ES';
-
-      const micBtn = document.getElementById(btnId);
-      micBtn.classList.add('listening');
-      document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${expectedText}"`;
-
-      recognition.start();
-
-      recognition.onresult = function(event) {
-        micBtn.classList.remove('listening');
-        processarResultadoVoz(event.results[0][0].transcript);
-      };
-
-      recognition.onerror = function() {
-        micBtn.classList.remove('listening');
-        document.getElementById(statusId).innerHTML = "Não ouvi bem. Clique para tentar.";
-        hablarPronunciacionCorrecta(expectedText);
-      };
+      palavraAlternativaAtual = altWord;
     }
 
-    // Função que o Kodular vai chamar para devolver o texto gravado
-    function receberTextoVoz(textoOuvido) {
-      processarResultadoVoz(textoOuvido);
+    btnIdAtual = btnId;
+    statusIdAtual = statusId;
+    qIdAtual = qId;
+
+    if (window.AppInventor) {
+      document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
+      document.getElementById(statusId).style.color = "#ffb703";
+      window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
+      return;
     }
 
-    function processarResultadoVoz(transcript) {
-      const statusText = document.getElementById(statusIdAtual);
-      const micBtn = document.getElementById(btnIdAtual);
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      processarResultadoVoz(expectedText);
+      return;
+    }
 
-      const normalizedTarget = palavraEsperadaAtual.toLowerCase().replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
-      const normalizedTranscript = transcript.toLowerCase().replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
 
-      if (normalizedTranscript.includes(normalizedTarget) || normalizedTranscript.includes(normalizedTarget.replace('ñ','n'))) {
-        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
-        statusText.style.color = "#2ec4b6";
-        if (micBtn) micBtn.disabled = true;
-        
-        answeredCorrectly++;
-        checkCompletion();
-      } else {
-        statusText.innerHTML = `Ouvi "${transcript}". 🔊 Ouça a pronúncia correta!`;
-        statusText.style.color = "#e63946";
-        hablarPronunciacionCorrecta(palavraEsperadaAtual);
+    const micBtn = document.getElementById(btnId);
+    micBtn.classList.add('listening');
+    document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${palavraEsperadaAtual}"`;
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+      micBtn.classList.remove('listening');
+      processarResultadoVoz(event.results[0][0].transcript);
+    };
+
+    recognition.onerror = function() {
+      micBtn.classList.remove('listening');
+      processarResultadoVoz(""); // Dispara tratamento de erro
+    };
+  }
+
+  function receberTextoVoz(textoOuvido) {
+    processarResultadoVoz(textoOuvido);
+  }
+
+  // 2. PROCESSAMENTO E TROCA DE PALAVRA APÓS 2 ERROS
+  function processarResultadoVoz(transcript) {
+    const statusText = document.getElementById(statusIdAtual);
+    const micBtn = document.getElementById(btnIdAtual);
+
+    let normTarget = palavraEsperadaAtual.toLowerCase().trim()
+      .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
+      
+    let normTranscript = transcript.toLowerCase().trim()
+      .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
+      .replace(/\bestou\b/g, "estoy")
+      .replace(/\bola\b/g, "hola")
+      .replace(/\bdise\b/g, "dice")
+      .replace(/\bgrasias\b/g, "gracias");
+
+    // Verifica se acertou
+    if (transcript !== "" && (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n')))) {
+      statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
+      statusText.style.color = "#2ec4b6";
+      if (micBtn) micBtn.disabled = true;
+      
+      answeredCorrectly++;
+      checkCompletion();
+    } else {
+      // Registra a tentativa com falha
+      if (!questionAttempts[qIdAtual]) {
+        questionAttempts[qIdAtual] = { count: 0, switched: false, currentWord: palavraEsperadaAtual };
       }
-    }
+      questionAttempts[qIdAtual].count++;
 
-    // Síntese de voz nativa (Para falar a pronúncia correta quando o aluno erra)
-   // Solicita fala nativa ao Kodular ou usa a síntese Web
-    function hablarPronunciacionCorrecta(texto) {
-      if (window.AppInventor) {
-        window.AppInventor.setWebViewString("Falar_" + texto);
-      } else if ('speechSynthesis' in window) {
-        const synth = window.speechSynthesis;
-        const utterThis = new SpeechSynthesisUtterance(texto);
-        utterThis.lang = 'es-ES';
-        synth.speak(utterThis);
-      }
-    }
+      // Se errou 2 vezes e existe palavra alternativa configurada
+      if (questionAttempts[qIdAtual].count >= 2 && palavraAlternativaAtual && !questionAttempts[qIdAtual].switched) {
+        questionAttempts[qIdAtual].switched = true;
+        questionAttempts[qIdAtual].currentWord = palavraAlternativaAtual;
+        palavraEsperadaAtual = palavraAlternativaAtual;
 
-    function processarResultadoVoz(transcript) {
-      const statusText = document.getElementById(statusIdAtual);
-      const micBtn = document.getElementById(btnIdAtual);
-
-      let normTarget = palavraEsperadaAtual.toLowerCase().trim()
-        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
-        
-      let normTranscript = transcript.toLowerCase().trim()
-        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
-        .replace(/\bestou\b/g, "estoy")
-        .replace(/\bola\b/g, "hola")
-        .replace(/\bdise\b/g, "dice")
-        .replace(/\bgrasias\b/g, "gracias");
-
-      if (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n'))) {
-        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
-        statusText.style.color = "#2ec4b6";
-        if (micBtn) micBtn.disabled = true;
-        
-        if (typeof answeredCorrectly !== 'undefined') {
-          answeredCorrectly++;
-          checkCompletion();
+        // Atualiza o visual no HTML deixando a nova palavra evidente
+        const wordElement = document.getElementById(`word-display-${qIdAtual}`);
+        if (wordElement) {
+          wordElement.innerHTML = palavraAlternativaAtual.toUpperCase() + " 🔄";
+          wordElement.classList.add("alt-active");
         }
+
+        statusText.innerHTML = `Facilitamos para você! Tente falar "${palavraAlternativaAtual.toUpperCase()}" 🔊`;
+        statusText.style.color = "#ffb703";
       } else {
-        statusText.innerHTML = `Ouvi "${transcript}". 🔊 Ouça a pronúncia correta!`;
+        statusText.innerHTML = transcript ? `Ouvi "${transcript}". 🔊 Ouça a pronúncia!` : "Não ouvi bem. 🔊 Ouça a pronúncia!";
         statusText.style.color = "#e63946";
-        hablarPronunciacionCorrecta(palavraEsperadaAtual);
       }
+
+      hablarPronunciacionCorrecta(palavraEsperadaAtual);
     }
+  }
 
-    // 4. SALVAR PROGRESSO E DISPARAR VITÓRIA
-    function checkCompletion() {
-      if (answeredCorrectly >= totalQuestions) {
-        // Salva XP e Dias no localStorage
-        saveUserProgress(100);
-
-        setTimeout(() => {
-          playVictorySound();
-          document.getElementById('victory-modal').classList.add('show');
-        }, 500);
-      }
+  function hablarPronunciacionCorrecta(texto) {
+    if (window.AppInventor) {
+      window.AppInventor.setWebViewString("Falar_" + texto);
+    } else if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      const utterThis = new SpeechSynthesisUtterance(texto);
+      utterThis.lang = 'es-ES';
+      synth.speak(utterThis);
     }
+  }
 
-    function saveUserProgress(xpEarned) {
-      let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
-      let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
-
-      currentXP += xpEarned;
-
-      localStorage.setItem('faleandgo_xp', currentXP);
-      localStorage.setItem('faleandgo_streak', currentStreak);
+  // 3. CONTROLE DE SAÍDA E SALVAMENTO DE PROGRESSO
+  function confirmExit() {
+    if (answeredCorrectly < totalQuestions) {
+      document.getElementById('exit-modal').classList.add('show');
+    } else {
+      window.location.href = 'aulas_basicas.html';
     }
+  }
 
-    // 5. SOM SINTETIZADO (0 KB)
-    function playVictorySound() {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
-        const notes = [261.63, 329.63, 392.00, 523.25];
-        
-        notes.forEach((freq, index) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.value = freq;
-          gain.gain.setValueAtTime(0.3, ctx.currentTime + index * 0.12);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + index * 0.12 + 0.4);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + index * 0.12);
-          osc.stop(ctx.currentTime + index * 0.12 + 0.4);
-        });
-      } catch (e) {}
+  function closeExitModal() {
+    document.getElementById('exit-modal').classList.remove('show');
+  }
+
+  function exitLesson() {
+    // Salva o progresso parcial (20 XP por questão concluída)
+    if (answeredCorrectly > 0) {
+      saveUserProgress(answeredCorrectly * 20);
     }
+    window.location.href = 'aulas_basicas.html';
+  }
+
+  function checkCompletion() {
+    if (answeredCorrectly >= totalQuestions) {
+      saveUserProgress(100);
+      setTimeout(() => {
+        if (typeof playVictorySound === 'function') playVictorySound();
+        document.getElementById('victory-modal').classList.add('show');
+      }, 500);
+    }
+  }
+
+  function saveUserProgress(xpEarned) {
+    let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
+    let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
+    currentXP += xpEarned;
+    localStorage.setItem('faleandgo_xp', currentXP);
+    localStorage.setItem('faleandgo_streak', currentStreak);
+  }
   </script>
 </body>
 </html>
