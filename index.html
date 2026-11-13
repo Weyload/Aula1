@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Aula 1 - Alfabeto e Pronúncia | Fale&Go</title>
+  <title>Aula 1 - Frases e Palavras | Fale&Go</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
@@ -17,24 +17,31 @@
 
     .mascot-section { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
     .capybara-avatar { height: 110px; width: auto; display: block; flex-shrink: 0; }
-    .speech-bubble { background: #ffffff; color: #0b2545; padding: 14px 18px; border-radius: 18px; border-top-left-radius: 4px; font-size: 14px; font-weight: 700; line-height: 1.4; box-shadow: 0 6px 16px rgba(0,0,0,0.2); min-height: 70px; position: relative; }
+    .speech-bubble { background: #ffffff; color: #0b2545; padding: 14px 18px; border-radius: 18px; border-top-left-radius: 4px; font-size: 14px; font-weight: 700; line-height: 1.4; box-shadow: 0 6px 16px rgba(0,0,0,0.2); min-height: 70px; position: relative; flex: 1; }
     .cursor { display: inline-block; width: 2px; height: 14px; background-color: #0b2545; margin-left: 2px; animation: blink 0.7s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+    .section-title { font-size: 18px; font-weight: 900; color: #ffb703; }
+    .progress-pill { background: #134074; color: #2ec4b6; border: 1px solid #1d5393; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 900; white-space: nowrap; }
+
+    .vocab-box { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 14px; padding: 12px 14px; font-size: 13px; color: #e1e9f0; line-height: 1.6; margin-bottom: 20px; font-weight: 700; }
+    .vocab-tag { display: inline-block; background: #134074; color: #ffb703; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin: 2px; font-size: 12px; }
+
+    .video-intro { background: rgba(46, 196, 182, 0.15); border-left: 4px solid #2ec4b6; padding: 12px 14px; border-radius: 10px; font-size: 14px; font-weight: 800; color: #ffffff; margin: 24px 0 14px; line-height: 1.4; }
     .video-card { background: #134074; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); margin-bottom: 25px; border: 2px solid #1d5393; }
     .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     .video-info { padding: 12px 16px; font-size: 12px; color: #8da9c4; font-weight: 700; }
-
-    .section-title { font-size: 18px; font-weight: 900; color: #ffb703; margin-bottom: 15px; }
 
     .exercise-card { background: #ffffff; color: #0b2545; border-radius: 20px; padding: 18px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
     .question-text { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
     
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     .opt-btn { background: #eef4f8; border: 2px solid #d0e1f9; padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 14px; color: #0b2545; cursor: pointer; text-align: left; transition: all 0.2s; }
+    .opt-btn:disabled { cursor: default; }
     .opt-btn.correct { background: #2ec4b6 !important; border-color: #2ec4b6 !important; color: #ffffff !important; }
-    .opt-btn.wrong { background: #e63946 !important; border-color: #e63946 !important; color: #ffffff !important; }
+    .opt-btn.wrong { background: #e63946 !important; border-color: #e63946 !important; color: #ffffff !important; opacity: 0.85; }
 
     .voice-box { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 15px; background: #eef4f8; border-radius: 16px; }
     .mic-btn { width: 55px; height: 55px; border-radius: 50%; background: #ffb703; border: none; color: #0b2545; font-size: 24px; cursor: pointer; box-shadow: 0 6px 15px rgba(255, 183, 3, 0.4); display: flex; align-items: center; justify-content: center; }
@@ -60,12 +67,12 @@
   <!-- TOPO COM BOTÃO DE SAÍDA (Abre o Modal de Salvar) -->
   <div class="header">
     <button class="back-btn" onclick="confirmExit()">←</button>
-    <div class="header-title">Aula 1: O Segredo dos Sons</div>
+    <div class="header-title">Aula 1: Palavras e frases - Básico</div>
   </div>
 
   <div class="container">
 
-    <!-- MASCOTE E MENSAGEM (Com a Capivara Emoji Segura) -->
+    <!-- MASCOTE E MENSAGEM -->
     <div class="mascot-section">
       <img class="capybara-avatar" src="BtCapivarA_Escutar-SemFundo.png" alt="Capivara">
       <div class="speech-bubble">
@@ -73,67 +80,162 @@
       </div>
     </div>
 
-    <!-- VÍDEO -->
-    <div class="video-card">
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/HLkK5_-jV_M?start=345&enablejsapi=1" allowfullscreen></iframe>
-      </div>
-      <div class="video-info">
-        ⏱️ Assista aos 3 minutos principais | Canal: Vamos a Hablar Español
-      </div>
+    <div class="section-header">
+      <div class="section-title">🎯 Desafios da Aula</div>
+      <div class="progress-pill" id="progress-counter">0 / 12 concluidos</div>
     </div>
 
-    <div class="section-title">🎯 Desafios da Aula (5 Exercícios)</div>
+    <div class="vocab-box">
+      Você vai aprender:<br>
+      <span class="vocab-tag">Nombre</span>
+      <span class="vocab-tag">Gusto</span>
+      <span class="vocab-tag">Años</span>
+      <span class="vocab-tag">Bien</span>
+      <span class="vocab-tag">Dónde</span>
+      <span class="vocab-tag">Trabajas</span>
+      <span class="vocab-tag">Número</span>
+      <span class="vocab-tag">Luego</span>
+      <span class="vocab-tag">Estás</span>
+      <span class="vocab-tag">Correo</span>
+      <span class="vocab-tag">Español</span>
+      <span class="vocab-tag">Llamar</span>
+    </div>
 
-    <!-- EXERCÍCIO 1 -->
+    <!-- EXERCÍCIO 1 (ESCOLHA DE PALAVRA) -->
     <div class="exercise-card" id="q1">
-      <div class="question-text">1. O que significa o verbo "DELETREAR" mencionado na aula?</div>
+      <div class="question-text">1. Ao conhecer alguém pela primeira vez, qual palavra em espanhol significa "NOME"?</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Deletar uma mensagem</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1')">Soletrar uma palavra</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Desenhar uma letra</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Correo</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1')">Nombre</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Llamar</button>
       </div>
     </div>
 
-    <!-- EXERCÍCIO 2 -->
+    <!-- EXERCÍCIO 2 (COMPLETAR A FRASE) -->
     <div class="exercise-card" id="q2">
-      <div class="question-text">2. Se você for à farmácia pedir remédio para "MIGRAÑA", qual é o problema?</div>
+      <div class="question-text">2. Complete a frase de apresentação: "Mucho _____." (Prazer em conhecer você)</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Dor de garganta</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2')">Enxaqueca / Dor de cabeça</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Febre alta</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Frío</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2')">Gusto</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Sueño</button>
       </div>
     </div>
 
-    <!-- EXERCÍCIO 3 -->
+    <!-- EXERCÍCIO 3 (ESCOLHA DE PALAVRA) -->
     <div class="exercise-card" id="q3">
-      <div class="question-text">3. Como se pronuncia a letra "V" na palavra "VACA" na maioria dos países?</div>
+      <div class="question-text">3. Se alguém perguntar sua idade em espanhol, qual palavra significa "ANOS"?</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q3')">Com som suave de "B" (Baca)</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Com som de "F" (Faca)</button>
-        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Com som de "W"</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Días</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q3')">Años</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Horas</button>
       </div>
     </div>
 
-    <!-- EXERCÍCIO 4 (MICROFONE) -->
+    <!-- EXERCÍCIO 4 (COMPLETAR A FRASE) -->
     <div class="exercise-card" id="q4">
+      <div class="question-text">4. Complete a resposta para "¿Cómo estás?": "Estoy _____." (Estou bem)</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q4')">Bien</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q4')">Triste</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q4')">Perdido</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 5 (ESCOLHA DE PALAVRA) -->
+    <div class="exercise-card" id="q5">
+      <div class="question-text">5. Para descobrir a cidade ou país de origem de uma pessoa, qual palavra significa "ONDE"?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q5')">Español</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q5')">Cómo</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q5')">Dónde</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 6 (COMPLETAR A FRASE) -->
+    <div class="exercise-card" id="q6">
+      <div class="question-text">6. Complete a pergunta sobre ocupação: "¿Dónde _____?" (Onde você trabalha?)</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q6')">Hablas</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q6')">Trabajas</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q6')">Sabes</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 7 (ESCOLHA DE PALAVRA) -->
+    <div class="exercise-card" id="q7">
+      <div class="question-text">7. No fim de uma boa conversa, qual palavra você pede para salvar o "NÚMERO" de telefone?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q7')">Número</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q7')">Baño</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q7')">Cuenta</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 8 (COMPLETAR A FRASE) -->
+    <div class="exercise-card" id="q8">
+      <div class="question-text">8. Complete a despedida ao final do encontro: "Hasta _____." (Até mais)</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q8')">Tarde</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q8')">Luego</button>
+        <button class="opt-btn" onclick="checkAnswer(this, false, 'q8')">Noche</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 9 (MICROFONE) -->
+    <div class="exercise-card" id="q9">
       <div class="question-text">
-        4. Pronúncia 1: Diga a palavra "<span id="word-display-q4" class="target-word">MAÑANA</span>" no microfone:
+        9. Pronúncia 1: Diga a frase "<span id="word-display-q9" class="target-word">¿CUÁL ES TU NOMBRE?</span>" no microfone:
       </div>
       <div class="voice-box">
-        <button class="mic-btn" id="mic1-btn" onclick="startVoiceRecognition('mañana', 'mic1-btn', 'status1', 'q4', 'dia')">🎙️</button>
+        <button class="mic-btn" id="mic1-btn" onclick="startVoiceRecognition('cuál es tu nombre', 'mic1-btn', 'status1', 'q9', 'nombre')">🎙️</button>
         <div id="status1" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
       </div>
     </div>
 
-    <!-- EXERCÍCIO 5 (MICROFONE) -->
-    <div class="exercise-card" id="q5">
+    <!-- EXERCÍCIO 10 (MICROFONE) -->
+    <div class="exercise-card" id="q10">
       <div class="question-text">
-        5. Pronúncia 2: Pratique a vibração do R dizendo "<span id="word-display-q5" class="target-word">CARRETERA</span>":
+        10. Pronúncia 2: Diga a frase "<span id="word-display-q10" class="target-word">MUCHO GUSTO</span>" no microfone:
       </div>
       <div class="voice-box">
-        <button class="mic-btn" id="mic2-btn" onclick="startVoiceRecognition('carretera', 'mic2-btn', 'status2', 'q5', 'hola')">🎙️</button>
+        <button class="mic-btn" id="mic2-btn" onclick="startVoiceRecognition('mucho gusto', 'mic2-btn', 'status2', 'q10', 'gusto')">🎙️</button>
         <div id="status2" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 11 (MICROFONE) -->
+    <div class="exercise-card" id="q11">
+      <div class="question-text">
+        11. Pronúncia 3: Diga a frase "<span id="word-display-q11" class="target-word">¿DE DÓNDE ERES?</span>" no microfone:
+      </div>
+      <div class="voice-box">
+        <button class="mic-btn" id="mic3-btn" onclick="startVoiceRecognition('de dónde eres', 'mic3-btn', 'status3', 'q11', 'dónde')">🎙️</button>
+        <div id="status3" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 12 (MICROFONE) -->
+    <div class="exercise-card" id="q12">
+      <div class="question-text">
+        12. Pronúncia 4: Diga a frase "<span id="word-display-q12" class="target-word">¿CUÁL ES TU NÚMERO?</span>" no microfone:
+      </div>
+      <div class="voice-box">
+        <button class="mic-btn" id="mic4-btn" onclick="startVoiceRecognition('cuál es tu número', 'mic4-btn', 'status4', 'q12', 'número')">🎙️</button>
+        <div id="status4" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
+      </div>
+    </div>
+
+    <div class="video-intro">
+      🎬 Agora você já conhece palavras suficientes para praticar algumas frases deste vídeo:
+    </div>
+
+    <!-- VÍDEO -->
+    <div class="video-card">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/J9jqfocCaf0?si=fxQm0Kxt0EBbHy6A&amp;start=82" allowfullscreen></iframe>
+      </div>
+      <div class="video-info">
+        Conhecendo uma pessoa - Conversação | Canal: Mr. Spanish Channel - Señor Español
       </div>
     </div>
 
@@ -145,12 +247,12 @@
       <div style="font-size: 60px;">🏆</div>
       <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
       <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
-        Você completou todos os exercícios e treinou sua pronúncia!
+        Você completou todos os 12 exercícios e treinou sua pronúncia!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
         🌟 +100 XP Ganhos | Progresso Salvo
       </div>
-      <button class="btn-continue" onclick="window.location.href='aulas_basicas.html'">Voltar para a Trilha</button>
+      <button class="btn-continue" onclick="voltarParaAulasBasicas()">Voltar para a Trilha</button>
     </div>
   </div>
 
@@ -169,8 +271,19 @@
 
   <!-- INÍCIO DO CÓDIGO JAVASCRIPT CORRIGIDO -->
   <script>
+    // URL reserva da página de Aulas Básicas (ajuste o nome do repositório se necessário)
+    const URL_AULAS_BASICAS = 'https://weyload.github.io/Aulas-basicas/';
+
+    function voltarParaAulasBasicas() {
+      if (document.referrer && document.referrer.includes('weyload.github.io') && document.referrer !== window.location.href) {
+        window.location.href = document.referrer;
+      } else {
+        window.location.href = URL_AULAS_BASICAS;
+      }
+    }
+
     // 1. MÁQUINA DE ESCREVER
-    const textToType = "¡Hola! Nossa primeira aula!! Vamos começar por aqui. Assista à aula e depois responda aos exercícios. ¡Tú puedes!";
+    const textToType = "¡Hola! Nossa primeira aula!! Vamos aprender como conhecer pessoas.";
     let typeIndex = 0;
 
     function typeWriter() {
@@ -182,25 +295,35 @@
     }
     window.addEventListener('load', typeWriter);
 
-    // 2. VERIFICAR MÚLTIPLA ESCOLHA (Colore de Azul/Vermelho)
-    let answeredCorrectly = 0;
-    const totalQuestions = 5;
+    // 2. CONTROLE DOS 12 EXERCÍCIOS (Sem contar duplicado e permitindo tentar até acertar)
+    const totalQuestions = 12;
+    const completedQuestions = new Set();
     const questionAttempts = {};
 
+    function updateProgressUI() {
+      const counter = document.getElementById('progress-counter');
+      if (counter) {
+        counter.textContent = `${completedQuestions.size} / ${totalQuestions} concluidos`;
+      }
+    }
+
     function checkAnswer(btn, isCorrect, qId) {
+      if (completedQuestions.has(qId)) return;
+
       const card = document.getElementById(qId);
       const buttons = card.querySelectorAll('.opt-btn');
-      
-      // Desativa os outros botões
-      buttons.forEach(b => b.disabled = true);
 
       if (isCorrect) {
         btn.classList.add('correct');
-        answeredCorrectly++;
+        buttons.forEach(b => b.disabled = true);
+        completedQuestions.add(qId);
+        updateProgressUI();
+        checkCompletion();
       } else {
+        // Desativa apenas o botão errado para o aluno poder escolher a resposta certa
         btn.classList.add('wrong');
+        btn.disabled = true;
       }
-      checkCompletion();
     }
 
     // 3. RECONHECIMENTO DE VOZ (Com troca de palavra após 2 erros)
@@ -211,6 +334,8 @@
     let qIdAtual = '';
 
     function startVoiceRecognition(expectedText, btnId, statusId, qId, altWord = '') {
+      if (completedQuestions.has(qId)) return;
+
       if (questionAttempts[qId] && questionAttempts[qId].switched) {
         palavraEsperadaAtual = questionAttempts[qId].currentWord;
       } else {
@@ -260,13 +385,17 @@
     }
 
     function processarResultadoVoz(transcript) {
+      if (!qIdAtual || completedQuestions.has(qIdAtual)) return;
+
       const statusText = document.getElementById(statusIdAtual);
       const micBtn = document.getElementById(btnIdAtual);
 
       let normTarget = palavraEsperadaAtual.toLowerCase().trim()
+        .replace(/[¿?¡!.,]/g, '')
         .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
         
       let normTranscript = transcript.toLowerCase().trim()
+        .replace(/[¿?¡!.,]/g, '')
         .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
         .replace(/\bestou\b/g, "estoy").replace(/\bola\b/g, "hola")
         .replace(/\bdise\b/g, "dice").replace(/\bgrasias\b/g, "gracias");
@@ -276,7 +405,8 @@
         statusText.style.color = "#2ec4b6";
         if (micBtn) micBtn.disabled = true;
         
-        answeredCorrectly++;
+        completedQuestions.add(qIdAtual);
+        updateProgressUI();
         checkCompletion();
       } else {
         if (!questionAttempts[qIdAtual]) {
@@ -319,10 +449,10 @@
 
     // 4. CONTROLES DE SAÍDA E SALVAMENTO DE XP
     function confirmExit() {
-      if (answeredCorrectly < totalQuestions) {
+      if (completedQuestions.size < totalQuestions) {
         document.getElementById('exit-modal').classList.add('show');
       } else {
-        window.location.href = 'aulas_basicas.html';
+        voltarParaAulasBasicas();
       }
     }
 
@@ -331,14 +461,14 @@
     }
 
     function exitLesson() {
-      if (answeredCorrectly > 0) {
-        saveUserProgress(answeredCorrectly * 20); // 20 XP por questão respondida
+      if (completedQuestions.size > 0) {
+        saveUserProgress(completedQuestions.size * 10);
       }
-      window.location.href = 'aulas_basicas.html';
+      voltarParaAulasBasicas();
     }
 
     function checkCompletion() {
-      if (answeredCorrectly >= totalQuestions) {
+      if (completedQuestions.size >= totalQuestions) {
         saveUserProgress(100);
         setTimeout(() => {
           playVictorySound();
@@ -377,4 +507,4 @@
     }
   </script>
 </body>
-</html> 
+</html>
