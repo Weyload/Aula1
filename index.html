@@ -16,7 +16,7 @@
     .container { padding: 20px; max-width: 500px; margin: 0 auto; width: 100%; }
 
     .mascot-section { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
-    .capybara-avatar { width: 70px; height: 70px; background: #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); flex-shrink: 0; border: 3px solid #ffffff; }
+    .capybara-avatar { height: 17px; width: auto; display: block; flex-shrink: 0; }
     .speech-bubble { background: #ffffff; color: #0b2545; padding: 14px 18px; border-radius: 18px; border-top-left-radius: 4px; font-size: 14px; font-weight: 700; line-height: 1.4; box-shadow: 0 6px 16px rgba(0,0,0,0.2); min-height: 70px; position: relative; }
     .cursor { display: inline-block; width: 2px; height: 14px; background-color: #0b2545; margin-left: 2px; animation: blink 0.7s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -67,7 +67,7 @@
 
     <!-- MASCOTE E MENSAGEM (Com a Capivara Emoji Segura) -->
     <div class="mascot-section">
-      <div class="capybara-avatar">🦫</div>
+      <img class="capybara-avatar" src="BtCapivarA_Escutar-SemFundo.png" alt="Capivara">
       <div class="speech-bubble">
         <span id="typed-text"></span><span class="cursor"></span>
       </div>
@@ -377,4 +377,4 @@
     }
   </script>
 </body>
-</html>
+</html> 
