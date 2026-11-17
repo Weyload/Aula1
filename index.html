@@ -35,7 +35,7 @@
     .video-info { padding: 12px 16px; font-size: 12px; color: #8da9c4; font-weight: 700; }
 
     .exercise-card { background: #ffffff; color: #0b2545; border-radius: 20px; padding: 18px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
-    .question-text { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+    .question-text { font-size: 15px; font-weight: 800; margin-bottom: 14px; line-height: 1.4; }
     
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     .opt-btn { background: #eef4f8; border: 2px solid #d0e1f9; padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 14px; color: #0b2545; cursor: pointer; text-align: left; transition: all 0.2s; }
@@ -49,6 +49,22 @@
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); } 100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); } }
 
     .target-word.alt-active { color: #ffb703; background: rgba(255, 183, 3, 0.2); padding: 2px 8px; border-radius: 6px; border: 1px dashed #ffb703; font-weight: 900; }
+
+    /* --- EXERCÍCIO DE TRADUÇÃO DE IMAGENS --- */
+    .image-speak-box { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px; background: #eef4f8; border-radius: 16px; }
+    .clickable-img-wrap { position: relative; width: 100%; max-width: 240px; height: 175px; background: #ffffff; border: 3px solid #d0e1f9; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; padding: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.25s ease; }
+    .clickable-img-wrap:active { transform: scale(0.97); }
+    .clickable-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+    .clickable-img-wrap.listening { border-color: #e63946; animation: pulse 1s infinite; }
+    .clickable-img-wrap.correct { border-color: #2ec4b6; background: #e6faf8; }
+    .clickable-img-wrap.wrong { border-color: #ffb703; background: #fff8e6; }
+    .img-mic-badge { position: absolute; bottom: 8px; right: 8px; background: #ffb703; color: #0b2545; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); pointer-events: none; }
+    .clickable-img-wrap.listening .img-mic-badge { background: #e63946; color: #ffffff; }
+    .clickable-img-wrap.correct .img-mic-badge { background: #2ec4b6; color: #ffffff; }
+    .img-hint-label { font-size: 12px; font-weight: 800; color: #5c677d; }
+    .img-status-text { font-size: 13px; font-weight: 800; color: #0b2545; text-align: center; min-height: 20px; }
+    .swap-img-btn { background: #ffffff; color: #134074; border: 1px solid #cbd9ea; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; cursor: pointer; margin-top: 2px; }
+    .swap-img-btn:active { background: #dce7f5; }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .modal-overlay.show { display: flex; opacity: 1; visibility: visible; }
@@ -64,7 +80,7 @@
 </head>
 <body>
 
-  <!-- TOPO COM BOTÃO DE SAÍDA (Abre o Modal de Salvar) -->
+  <!-- TOPO COM BOTÃO DE SAÍDA -->
   <div class="header">
     <button class="back-btn" onclick="confirmExit()">←</button>
     <div class="header-title">Aula 1: Palavras e frases - Básico</div>
@@ -82,7 +98,7 @@
 
     <div class="section-header">
       <div class="section-title">🎯 Desafios da Aula</div>
-      <div class="progress-pill" id="progress-counter">0 / 12 concluidos</div>
+      <div class="progress-pill" id="progress-counter">0 / 16 concluidos</div>
     </div>
 
     <div class="vocab-box">
@@ -225,6 +241,30 @@
       </div>
     </div>
 
+    <!-- EXERCÍCIO 13: TRADUÇÃO DE IMAGEM 1 -->
+    <div class="exercise-card" id="q13">
+      <div class="question-text">13. Tradução de Imagem 1: Toque na imagem e diga o nome em espanhol:</div>
+      <div class="image-speak-box" id="img-box-q13"></div>
+    </div>
+
+    <!-- EXERCÍCIO 14: TRADUÇÃO DE IMAGEM 2 -->
+    <div class="exercise-card" id="q14">
+      <div class="question-text">14. Tradução de Imagem 2: Toque na imagem e diga o nome em espanhol:</div>
+      <div class="image-speak-box" id="img-box-q14"></div>
+    </div>
+
+    <!-- EXERCÍCIO 15: TRADUÇÃO DE IMAGEM 3 -->
+    <div class="exercise-card" id="q15">
+      <div class="question-text">15. Tradução de Imagem 3: Toque na imagem e diga o nome em espanhol:</div>
+      <div class="image-speak-box" id="img-box-q15"></div>
+    </div>
+
+    <!-- EXERCÍCIO 16: TRADUÇÃO DE IMAGEM 4 -->
+    <div class="exercise-card" id="q16">
+      <div class="question-text">16. Tradução de Imagem 4: Toque na imagem e diga o nome em espanhol:</div>
+      <div class="image-speak-box" id="img-box-q16"></div>
+    </div>
+
     <div class="video-intro">
       🎬 Agora você já conhece palavras suficientes para praticar algumas frases deste vídeo:
     </div>
@@ -247,10 +287,10 @@
       <div style="font-size: 60px;">🏆</div>
       <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
       <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
-        Você completou todos os 12 exercícios e treinou sua pronúncia!
+        Você completou todos os 16 exercícios e treinou sua pronúncia e vocabulário visual!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
-        🌟 +100 XP Ganhos | Progresso Salvo
+        🌟 +120 XP Ganhos | Progresso Salvo
       </div>
       <button class="btn-continue" onclick="voltarParaAulasBasicas()">Voltar para a Trilha</button>
     </div>
@@ -269,10 +309,9 @@
     </div>
   </div>
 
-  <!-- INÍCIO DO CÓDIGO JAVASCRIPT CORRIGIDO -->
   <script>
-    // URL reserva da página de Aulas Básicas (ajuste o nome do repositório se necessário)
     const URL_AULAS_BASICAS = 'https://weyload.github.io/Aulas-basicas/';
+    const BASE_IMG_URL = 'https://weyload.github.io/Aula1/';
 
     function voltarParaAulasBasicas() {
       if (document.referrer && document.referrer.includes('weyload.github.io') && document.referrer !== window.location.href) {
@@ -283,7 +322,7 @@
     }
 
     // 1. MÁQUINA DE ESCREVER
-    const textToType = "¡Hola! Nossa primeira aula!! Vamos aprender como conhecer pessoas.";
+    const textToType = "¡Hola! Nossa primeira aula!! Vamos aprender como conhecer pessoas e falar palavras pelas imagens.";
     let typeIndex = 0;
 
     function typeWriter() {
@@ -293,10 +332,9 @@
         setTimeout(typeWriter, 30);
       }
     }
-    window.addEventListener('load', typeWriter);
 
-    // 2. CONTROLE DOS 12 EXERCÍCIOS (Sem contar duplicado e permitindo tentar até acertar)
-    const totalQuestions = 12;
+    // 2. CONTROLE DOS 16 EXERCÍCIOS
+    const totalQuestions = 16;
     const completedQuestions = new Set();
     const questionAttempts = {};
 
@@ -305,6 +343,27 @@
       if (counter) {
         counter.textContent = `${completedQuestions.size} / ${totalQuestions} concluidos`;
       }
+    }
+
+    function playCorrectSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        const notes = [523.25, 783.99];
+        notes.forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const startTime = ctx.currentTime + index * 0.1;
+          gain.gain.setValueAtTime(0.22, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.28);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.28);
+        });
+      } catch (e) {}
     }
 
     function checkAnswer(btn, isCorrect, qId) {
@@ -316,25 +375,211 @@
       if (isCorrect) {
         btn.classList.add('correct');
         buttons.forEach(b => b.disabled = true);
+        playCorrectSound();
         completedQuestions.add(qId);
         updateProgressUI();
         checkCompletion();
       } else {
-        // Desativa apenas o botão errado para o aluno poder escolher a resposta certa
         btn.classList.add('wrong');
         btn.disabled = true;
       }
     }
 
-    // 3. RECONHECIMENTO DE VOZ (Com troca de palavra após 2 erros)
+    // 3. BANCO COMPLETO DAS 45 IMAGENS DO GITHUB (https://weyload.github.io/Aula1/)
+    const bancoImagens45 = [
+      { arquivo: "banco.jpg", pt: "Banco", es: ["banco"] },
+      { arquivo: "cadeira.jpg", pt: "Cadeira", es: ["silla", "asiento"] },
+      { arquivo: "caderno.jpg", pt: "Caderno", es: ["cuaderno", "libreta"] },
+      { arquivo: "cafeteria.jpg", pt: "Cafeteria", es: ["cafeteria", "cafe"] },
+      { arquivo: "caixa_eletronico.jpg", pt: "Caixa eletrônico", es: ["cajero automatico", "cajero"] },
+      { arquivo: "calçada.jpg", pt: "Calçada", es: ["acera", "vereda", "banqueta"] },
+      { arquivo: "carregador.jpg", pt: "Carregador", es: ["cargador"] },
+      { arquivo: "carteira_dinheiro.jpg", pt: "Carteira", es: ["cartera", "billetera"] },
+      { arquivo: "celular.jpg", pt: "Celular", es: ["celular", "movil", "telefono"] },
+      { arquivo: "chaves.jpg", pt: "Chaves", es: ["llaves", "llave"] },
+      { arquivo: "ciclovia.jpg", pt: "Ciclovia", es: ["ciclovia", "carril bici"] },
+      { arquivo: "colher.jpg", pt: "Colher", es: ["cuchara"] },
+      { arquivo: "copo.jpg", pt: "Copo", es: ["vaso"] },
+      { arquivo: "correios.jpg", pt: "Correios", es: ["correos", "correo"] },
+      { arquivo: "escola.jpg", pt: "Escola", es: ["escuela", "colegio"] },
+      { arquivo: "escova_dente.jpg", pt: "Escova de dente", es: ["cepillo de dientes", "cepillo"] },
+      { arquivo: "esquina.jpg", pt: "Esquina", es: ["esquina"] },
+      { arquivo: "farmacia.jpg", pt: "Farmácia", es: ["farmacia"] },
+      { arquivo: "fone_de_ouvido.jpg", pt: "Fone de ouvido", es: ["audifonos", "auriculares", "cascos"] },
+      { arquivo: "garfo.jpg", pt: "Garfo", es: ["tenedor"] },
+      { arquivo: "garrafa.jpg", pt: "Garrafa", es: ["botella"] },
+      { arquivo: "guarda_chuva.jpg", pt: "Guarda-chuva", es: ["paraguas"] },
+      { arquivo: "hospital.jpg", pt: "Hospital", es: ["hospital"] },
+      { arquivo: "livro.jpg", pt: "Livro", es: ["libro"] },
+      { arquivo: "lixeira.jpg", pt: "Lixeira", es: ["basurero", "papelera", "cubo de basura"] },
+      { arquivo: "mesa.jpg", pt: "Mesa", es: ["mesa"] },
+      { arquivo: "metro.jpg", pt: "Metrô", es: ["metro", "subterraneo", "subte"] },
+      { arquivo: "mochila.jpg", pt: "Mochila", es: ["mochila"] },
+      { arquivo: "museo.jpg", pt: "Museu", es: ["museo"] },
+      { arquivo: "oculos.jpg", pt: "Óculos", es: ["gafas", "lentes", "anteojos"] },
+      { arquivo: "padaria.jpg", pt: "Padaria", es: ["panaderia"] },
+      { arquivo: "panela.jpg", pt: "Panela", es: ["olla", "cazuela", "sarten"] },
+      { arquivo: "policia.jpg", pt: "Polícia", es: ["policia", "comisaria"] },
+      { arquivo: "ponto_onibus.jpg", pt: "Ponto de ônibus", es: ["parada de autobus", "parada de bus", "parada"] },
+      { arquivo: "poste_luz.jpg", pt: "Poste de luz", es: ["poste de luz", "farola", "poste"] },
+      { arquivo: "praça.jpg", pt: "Praça", es: ["plaza"] },
+      { arquivo: "prato.jpg", pt: "Prato", es: ["plato"] },
+      { arquivo: "quarteirão.jpg", pt: "Quarteirão", es: ["cuadra", "manzana"] },
+      { arquivo: "relogio_pulso.jpg", pt: "Relógio de pulso", es: ["reloj", "reloj de pulsera"] },
+      { arquivo: "restaurante.jpg", pt: "Restaurante", es: ["restaurante"] },
+      { arquivo: "rotatória.jpg", pt: "Rotatória", es: ["rotonda", "glorieta"] },
+      { arquivo: "rua.jpg", pt: "Rua", es: ["calle"] },
+      { arquivo: "sabonete.jpg", pt: "Sabonete", es: ["jabon"] },
+      { arquivo: "semaforo.jpg", pt: "Semáforo", es: ["semaforo"] },
+      { arquivo: "travesseiro.jpg", pt: "Travesseiro", es: ["almohada"] }
+    ];
+
+    const imageCardState = {
+      q13: { imgIndex: 1, attempts: 0 },  // cadeira.jpg (silla)
+      q14: { imgIndex: 23, attempts: 0 }, // livro.jpg (libro)
+      q15: { imgIndex: 8, attempts: 0 },  // celular.jpg (celular/móvil)
+      q16: { imgIndex: 25, attempts: 0 }  // mesa.jpg (mesa)
+    };
+
+    function renderImageCard(qId) {
+      const box = document.getElementById(`img-box-${qId}`);
+      if (!box) return;
+      const state = imageCardState[qId];
+      const item = bancoImagens45[state.imgIndex];
+      const imgSrc = encodeURI(BASE_IMG_URL + item.arquivo);
+      const fallbackSrc = encodeURI(item.arquivo);
+
+      box.innerHTML = `
+        <div class="clickable-img-wrap" id="img-wrap-${qId}" onclick="iniciarFalaImagem('${qId}')">
+          <img src="${imgSrc}" onerror="this.onerror=null; this.src='${fallbackSrc}';" alt="${item.pt}">
+          <div class="img-mic-badge">🎙️</div>
+        </div>
+        <div class="img-hint-label">Dica em português: <strong>${item.pt}</strong></div>
+        <div class="img-status-text" id="img-status-${qId}">Toque na imagem para falar em espanhol</div>
+        <button class="swap-img-btn" onclick="trocarImagemCard('${qId}')">🔄 Trocar imagem (${state.imgIndex + 1}/45)</button>
+      `;
+    }
+
+    function trocarImagemCard(qId) {
+      DesativarMicrofone();
+      const state = imageCardState[qId];
+      state.imgIndex = (state.imgIndex + 4) % bancoImagens45.length;
+      state.attempts = 0;
+      renderImageCard(qId);
+    }
+
+    // 4. RECONHECIMENTO DE VOZ UNIFICADO (INSTÂNCIA ÚNICA + LEVENSHTEIN)
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let reconhecedor = null;
+    let microfoneAtivo = false;
+    let modoVozAtual = null; // 'frase' (q9-q12) ou 'imagem' (q13-q16)
+
     let palavraEsperadaAtual = '';
     let palavraAlternativaAtual = '';
     let btnIdAtual = '';
     let statusIdAtual = '';
     let qIdAtual = '';
+    let imagemQIdAtual = '';
 
+    if (Recognition) {
+      reconhecedor = new Recognition();
+      reconhecedor.lang = 'es-ES';
+      reconhecedor.continuous = false;
+      reconhecedor.interimResults = false;
+
+      reconhecedor.onresult = (event) => {
+        const textoFalado = event.results[0][0].transcript.trim();
+        DesativarMicrofone();
+        limparEstadosListening();
+
+        if (modoVozAtual === 'imagem') {
+          processarResultadoImagem(textoFalado);
+        } else {
+          processarResultadoVoz(textoFalado);
+        }
+      };
+
+      reconhecedor.onend = () => {
+        microfoneAtivo = false;
+        limparEstadosListening();
+      };
+    }
+
+    function limparEstadosListening() {
+      document.querySelectorAll('.mic-btn.listening').forEach(el => el.classList.remove('listening'));
+      document.querySelectorAll('.clickable-img-wrap.listening').forEach(el => el.classList.remove('listening'));
+    }
+
+    function AtivarMicrofone() {
+      if (reconhecedor && !microfoneAtivo) {
+        try {
+          reconhecedor.start();
+          microfoneAtivo = true;
+        } catch (e) {}
+      }
+    }
+
+    function DesativarMicrofone() {
+      if (reconhecedor && microfoneAtivo) {
+        try {
+          reconhecedor.stop();
+          microfoneAtivo = false;
+        } catch (e) {}
+      }
+    }
+
+    function limparTextoParaComparacao(texto) {
+      return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s]/gi, '')
+        .toLowerCase()
+        .replace(/^(el|la|los|las|un|una|unos|unas)\s+/i, '')
+        .trim();
+    }
+
+    function obterDistanciaLevenshtein(a, b) {
+      const matriz = [];
+      for (let i = 0; i <= b.length; i++) matriz[i] = [i];
+      for (let j = 0; j <= a.length; j++) matriz[0][j] = j;
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matriz[i][j] = matriz[i - 1][j - 1];
+          } else {
+            matriz[i][j] = Math.min(
+              matriz[i - 1][j - 1] + 1,
+              matriz[i][j - 1] + 1,
+              matriz[i - 1][j] + 1
+            );
+          }
+        }
+      }
+      return matriz[b.length][a.length];
+    }
+
+    function verificarAproximidade(palavraFalada, alternativasCorretas) {
+      const faladaLimpa = limparTextoParaComparacao(palavraFalada);
+      if (!faladaLimpa) return false;
+
+      for (let correta of alternativasCorretas) {
+        const corretaLimpa = limparTextoParaComparacao(correta);
+        if (faladaLimpa === corretaLimpa || faladaLimpa.includes(corretaLimpa)) return true;
+
+        const distancia = obterDistanciaLevenshtein(faladaLimpa, corretaLimpa);
+        const toleranciaMaxima = corretaLimpa.length <= 4 ? 1 : 2;
+        if (distancia <= toleranciaMaxima) return true;
+      }
+      return false;
+    }
+
+    // --- FLUXO DE VOZ DAS FRASES (EXERCÍCIOS 9 A 12) ---
     function startVoiceRecognition(expectedText, btnId, statusId, qId, altWord = '') {
       if (completedQuestions.has(qId)) return;
+
+      DesativarMicrofone();
+      limparEstadosListening();
 
       if (questionAttempts[qId] && questionAttempts[qId].switched) {
         palavraEsperadaAtual = questionAttempts[qId].currentWord;
@@ -343,45 +588,21 @@
         palavraAlternativaAtual = altWord;
       }
 
+      modoVozAtual = 'frase';
       btnIdAtual = btnId;
       statusIdAtual = statusId;
       qIdAtual = qId;
 
-      if (window.AppInventor) {
-        document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
-        document.getElementById(statusId).style.color = "#ffb703";
-        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
+      if (!reconhecedor) {
+        processarResultadoVoz(palavraEsperadaAtual);
         return;
       }
-
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        processarResultadoVoz(expectedText);
-        return;
-      }
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'es-ES';
 
       const micBtn = document.getElementById(btnId);
-      micBtn.classList.add('listening');
+      if (micBtn) micBtn.classList.add('listening');
       document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${palavraEsperadaAtual.toUpperCase()}"`;
 
-      recognition.start();
-
-      recognition.onresult = function(event) {
-        micBtn.classList.remove('listening');
-        processarResultadoVoz(event.results[0][0].transcript);
-      };
-
-      recognition.onerror = function() {
-        micBtn.classList.remove('listening');
-        processarResultadoVoz(""); 
-      };
-    }
-
-    function receberTextoVoz(textoOuvido) {
-      processarResultadoVoz(textoOuvido);
+      AtivarMicrofone();
     }
 
     function processarResultadoVoz(transcript) {
@@ -390,21 +611,16 @@
       const statusText = document.getElementById(statusIdAtual);
       const micBtn = document.getElementById(btnIdAtual);
 
-      let normTarget = palavraEsperadaAtual.toLowerCase().trim()
-        .replace(/[¿?¡!.,]/g, '')
-        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
-        
       let normTranscript = transcript.toLowerCase().trim()
-        .replace(/[¿?¡!.,]/g, '')
-        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
         .replace(/\bestou\b/g, "estoy").replace(/\bola\b/g, "hola")
         .replace(/\bdise\b/g, "dice").replace(/\bgrasias\b/g, "gracias");
 
-      if (transcript !== "" && (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n')))) {
+      if (transcript !== "" && verificarAproximidade(normTranscript, [palavraEsperadaAtual])) {
         statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
         statusText.style.color = "#2ec4b6";
         if (micBtn) micBtn.disabled = true;
-        
+        playCorrectSound();
+
         completedQuestions.add(qIdAtual);
         updateProgressUI();
         checkCompletion();
@@ -436,6 +652,91 @@
       }
     }
 
+    // --- FLUXO DE VOZ DAS IMAGENS (EXERCÍCIOS 13 A 16) ---
+    function iniciarFalaImagem(qId) {
+      const state = imageCardState[qId];
+      const item = bancoImagens45[state.imgIndex];
+
+      DesativarMicrofone();
+      limparEstadosListening();
+
+      modoVozAtual = 'imagem';
+      imagemQIdAtual = qId;
+
+      const wrap = document.getElementById(`img-wrap-${qId}`);
+      const statusEl = document.getElementById(`img-status-${qId}`);
+
+      if (!reconhecedor) {
+        processarResultadoImagem(item.es[0]);
+        return;
+      }
+
+      if (wrap) {
+        wrap.classList.remove('wrong');
+        wrap.classList.add('listening');
+      }
+      if (statusEl) {
+        statusEl.textContent = `🎙️ Ouvindo... Fale "${item.pt}" em espanhol!`;
+        statusEl.style.color = '#e63946';
+      }
+
+      AtivarMicrofone();
+    }
+
+    function processarResultadoImagem(transcript) {
+      if (!imagemQIdAtual) return;
+      const qId = imagemQIdAtual;
+      const state = imageCardState[qId];
+      const item = bancoImagens45[state.imgIndex];
+      const wrap = document.getElementById(`img-wrap-${qId}`);
+      const statusEl = document.getElementById(`img-status-${qId}`);
+
+      if (transcript !== "" && verificarAproximidade(transcript, item.es)) {
+        if (wrap) {
+          wrap.classList.remove('listening', 'wrong');
+          wrap.classList.add('correct');
+        }
+        if (statusEl) {
+          statusEl.innerHTML = `✅ ¡Correcto! "${item.es[0].toUpperCase()}" (Você disse: "${transcript}")`;
+          statusEl.style.color = '#1b7f75';
+        }
+        playCorrectSound();
+
+        if (!completedQuestions.has(qId)) {
+          completedQuestions.add(qId);
+          updateProgressUI();
+          checkCompletion();
+        }
+      } else {
+        state.attempts++;
+        if (wrap) {
+          wrap.classList.remove('listening');
+          wrap.classList.add('wrong');
+        }
+
+        if (state.attempts >= 2) {
+          if (statusEl) {
+            statusEl.innerHTML = `🔊 Resposta: <strong>${item.es[0].toUpperCase()}</strong>. Toque na imagem para repetir!`;
+            statusEl.style.color = '#b57c00';
+          }
+        } else {
+          if (statusEl) {
+            statusEl.innerHTML = `Ouvi "${transcript}". 🔊 Ouça e toque na imagem para tentar de novo!`;
+            statusEl.style.color = '#e63946';
+          }
+        }
+        hablarPronunciacionCorrecta(item.es[0]);
+      }
+    }
+
+    function receberTextoVoz(textoOuvido) {
+      if (modoVozAtual === 'imagem') {
+        processarResultadoImagem(textoOuvido);
+      } else {
+        processarResultadoVoz(textoOuvido);
+      }
+    }
+
     function hablarPronunciacionCorrecta(texto) {
       if (window.AppInventor) {
         window.AppInventor.setWebViewString("Falar_" + texto);
@@ -447,7 +748,7 @@
       }
     }
 
-    // 4. CONTROLES DE SAÍDA E SALVAMENTO DE XP
+    // 5. CONTROLES DE SAÍDA E SALVAMENTO DE XP
     function confirmExit() {
       if (completedQuestions.size < totalQuestions) {
         document.getElementById('exit-modal').classList.add('show');
@@ -461,6 +762,7 @@
     }
 
     function exitLesson() {
+      DesativarMicrofone();
       if (completedQuestions.size > 0) {
         saveUserProgress(completedQuestions.size * 10);
       }
@@ -469,7 +771,7 @@
 
     function checkCompletion() {
       if (completedQuestions.size >= totalQuestions) {
-        saveUserProgress(100);
+        saveUserProgress(120);
         setTimeout(() => {
           playVictorySound();
           document.getElementById('victory-modal').classList.add('show');
@@ -505,6 +807,11 @@
         });
       } catch (e) {}
     }
+
+    window.addEventListener('load', () => {
+      typeWriter();
+      ['q13', 'q14', 'q15', 'q16'].forEach(renderImageCard);
+    });
   </script>
 </body>
 </html>
