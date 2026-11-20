@@ -116,9 +116,11 @@
       <span class="vocab-tag">Español</span>
       <span class="vocab-tag">Llamar</span>
     </div>
-<div class="video-intro">
-       Que tal um vídeo para iniciar uma conversa em Espanhol?
+
+    <div class="video-intro">
+      Que tal um vídeo para iniciar uma conversa em Espanhol?
     </div>
+
     <!-- VÍDEO -->
     <div class="video-card">
       <div class="video-container">
@@ -128,15 +130,17 @@
         Conhecendo uma pessoa - Conversação | Canal: Mr. Spanish Channel - Señor Español
       </div>
     </div>
+
     <div class="video-intro">
       🎬 Agora você já conhece palavras suficientes, vamos fazer alguns exercicios OK!?
     </div>
+
     <!-- EXERCÍCIO 1 (ESCOLHA DE PALAVRA) -->
     <div class="exercise-card" id="q1">
       <div class="question-text">1. Ao conhecer alguém pela primeira vez, qual palavra em espanhol significa "NOME"?</div>
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Correo</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1')">Nombre</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q1', 'Nombre')">Nombre</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q1')">Llamar</button>
       </div>
     </div>
@@ -146,7 +150,7 @@
       <div class="question-text">2. Complete a frase de apresentação: "Mucho _____." (Prazer em conhecer você)</div>
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Frío</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2')">Gusto</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q2', 'Mucho gusto')">Gusto</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q2')">Sueño</button>
       </div>
     </div>
@@ -156,7 +160,7 @@
       <div class="question-text">3. Se alguém perguntar sua idade em espanhol, qual palavra significa "ANOS"?</div>
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Días</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q3')">Años</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q3', 'Años')">Años</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q3')">Horas</button>
       </div>
     </div>
@@ -165,7 +169,7 @@
     <div class="exercise-card" id="q4">
       <div class="question-text">4. Complete a resposta para "¿Cómo estás?": "Estoy _____." (Estou bem)</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q4')">Bien</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q4', 'Estoy bien')">Bien</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q4')">Triste</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q4')">Perdido</button>
       </div>
@@ -177,7 +181,7 @@
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q5')">Español</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q5')">Cómo</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q5')">Dónde</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q5', 'Dónde')">Dónde</button>
       </div>
     </div>
 
@@ -186,7 +190,7 @@
       <div class="question-text">6. Complete a pergunta sobre ocupação: "¿Dónde _____?" (Onde você trabalha?)</div>
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q6')">Hablas</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q6')">Trabajas</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q6', '¿Dónde trabajas?')">Trabajas</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q6')">Sabes</button>
       </div>
     </div>
@@ -195,7 +199,7 @@
     <div class="exercise-card" id="q7">
       <div class="question-text">7. No fim de uma boa conversa, qual palavra você pede para salvar o "NÚMERO" de telefone?</div>
       <div class="options-grid">
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q7')">Número</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q7', 'Número')">Número</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q7')">Baño</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q7')">Cuenta</button>
       </div>
@@ -206,7 +210,7 @@
       <div class="question-text">8. Complete a despedida ao final do encontro: "Hasta _____." (Até mais)</div>
       <div class="options-grid">
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q8')">Tarde</button>
-        <button class="opt-btn" onclick="checkAnswer(this, true, 'q8')">Luego</button>
+        <button class="opt-btn" onclick="checkAnswer(this, true, 'q8', 'Hasta luego')">Luego</button>
         <button class="opt-btn" onclick="checkAnswer(this, false, 'q8')">Noche</button>
       </div>
     </div>
@@ -279,8 +283,6 @@
       <div class="image-speak-box" id="img-box-q16"></div>
     </div>
 
-    
-
   </div>
 
   <!-- MODAL DE VITÓRIA -->
@@ -292,7 +294,7 @@
         Você completou todos os 16 exercícios e treinou sua pronúncia e vocabulário visual!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
-        🌟 +120 XP Ganhos | Progresso Salvo
+        🌟 +100 XP Ganhos | Progresso Salvo
       </div>
       <button class="btn-continue" onclick="voltarParaAulasBasicas()">Voltar para a Trilha</button>
     </div>
@@ -312,6 +314,7 @@
   </div>
 
   <script>
+    const LESSON_ID = 'aula_1';
     const URL_AULAS_BASICAS = 'https://weyload.github.io/Aulas-basicas/';
     const BASE_IMG_URL = 'https://weyload.github.io/Aula1/';
 
@@ -368,7 +371,7 @@
       } catch (e) {}
     }
 
-    function checkAnswer(btn, isCorrect, qId) {
+    function checkAnswer(btn, isCorrect, qId, spanishAudioText = '') {
       if (completedQuestions.has(qId)) return;
 
       const card = document.getElementById(qId);
@@ -377,7 +380,15 @@
       if (isCorrect) {
         btn.classList.add('correct');
         buttons.forEach(b => b.disabled = true);
+        
+        // Toca a nota de acerto e pronuncia a resposta certa logo em seguida
         playCorrectSound();
+        if (spanishAudioText) {
+          setTimeout(() => {
+            hablarPronunciacionCorrecta(spanishAudioText);
+          }, 250);
+        }
+
         completedQuestions.add(qId);
         updateProgressUI();
         checkCompletion();
@@ -474,7 +485,7 @@
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let reconhecedor = null;
     let microfoneAtivo = false;
-    let modoVozAtual = null; // 'frase' (q9-q12) ou 'imagem' (q13-q16)
+    let modoVozAtual = null;
 
     let palavraEsperadaAtual = '';
     let palavraAlternativaAtual = '';
@@ -744,6 +755,7 @@
         window.AppInventor.setWebViewString("Falar_" + texto);
       } else if ('speechSynthesis' in window) {
         const synth = window.speechSynthesis;
+        synth.cancel();
         const utterThis = new SpeechSynthesisUtterance(texto);
         utterThis.lang = 'es-ES';
         synth.speak(utterThis);
@@ -766,12 +778,10 @@
     function exitLesson() {
       DesativarMicrofone();
       if (completedQuestions.size > 0) {
-        saveUserProgress(completedQuestions.size * 10);
+        saveUserProgress(completedQuestions.size * 5);
       }
       voltarParaAulasBasicas();
     }
-
-const LESSON_ID = 'aula_1';
 
     function checkCompletion() {
       if (completedQuestions.size >= totalQuestions) {
@@ -791,6 +801,7 @@ const LESSON_ID = 'aula_1';
         localStorage.setItem('faleandgo_completed_lessons', JSON.stringify(concluidas));
       }
     }
+
     function saveUserProgress(xpEarned) {
       let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
       let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
