@@ -82,6 +82,18 @@
     .btn-check-sentence { background: #ffb703; color: #0b2545; border: none; padding: 10px 16px; border-radius: 12px; font-weight: 900; font-size: 14px; flex: 1; cursor: pointer; }
     .btn-clear-sentence { background: #e1e9f0; color: #0b2545; border: none; padding: 10px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
     .builder-feedback { font-size: 13px; font-weight: 800; margin-top: 8px; min-height: 18px; }
+    .dialogue-step-block { margin-top: 14px; padding-top: 14px; border-top: 2px dashed #d0e1f9; }
+    .dialogue-step-block:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+    .dialogue-step-badge { display: inline-block; background: #ffb703; color: #0b2545; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; text-transform: uppercase; }
+
+    /* --- CARDS DE FALA DE TROCA AUTOMÁTICA (DUPLAS DE PALAVRAS) --- */
+    .auto-speech-box { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 18px; background: #eef4f8; border: 2px solid #d0e1f9; border-radius: 16px; transition: all 0.25s ease; }
+    .auto-speech-box.hit { background: #e6faf8; border-color: #2ec4b6; }
+    .auto-speech-box.miss { background: #ffeaea; border-color: #e63946; }
+    .speech-card-counter { background: #134074; color: #ffb703; font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .speech-target-big { font-size: 24px; font-weight: 900; color: #0b2545; text-align: center; letter-spacing: 0.5px; }
+    .speech-status-msg { font-size: 13px; font-weight: 800; color: #5c677d; text-align: center; min-height: 20px; }
+    .btn-start-deck { background: #ffb703; color: #0b2545; border: none; padding: 12px 22px; border-radius: 14px; font-weight: 900; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 183, 3, 0.35); }
   </style>
 </head>
 <body>
@@ -104,7 +116,7 @@
 
     <div class="section-header">
       <div class="section-title">🎯 Desafios da Aula</div>
-      <div class="progress-pill" id="progress-counter">0 / 11 concluidos</div>
+      <div class="progress-pill" id="progress-counter">0 / 18 concluidos</div>
     </div>
 
     <div class="vocab-box">
@@ -269,28 +281,70 @@
       </div>
     </div>
 
-    <!-- EXERCÍCIO 11 (MONTAR RESPOSTA DO DIÁLOGO) -->
+    <!-- EXERCÍCIO 11 (MONTAR DIÁLOGO 1: CUMPRIMENTOS) -->
     <div class="exercise-card" id="q11">
       <div class="question-text">11. Monte uma resposta para a pergunta abaixo tocando nas palavras na ordem certa:</div>
-      
-      <div class="dialogue-prompt">
-        <div class="dialogue-prompt-es">🗣️ ¿Cómo estás?</div>
-        <div class="dialogue-prompt-pt">Como você está? (Ex: Estou bem, obrigado. E você? / Estou ótimo / Estou muito bem)</div>
-      </div>
+      <div id="dialogue-container-q11"></div>
+    </div>
 
-      <!-- Área onde a frase é montada (com "Estoy" já pronto) -->
-      <div class="sentence-builder-area" id="builder-area-q11">
-        <span class="fixed-word-chip">Estoy</span>
-      </div>
+    <!-- EXERCÍCIO 12 (MONTAR DIÁLOGO 2: APRESENTAÇÃO EM 2 ETAPAS) -->
+    <div class="exercise-card" id="q12">
+      <div class="question-text">12. Apresentação: Complete as duas partes da conversa tocando nas palavras:</div>
+      <div id="dialogue-container-q12"></div>
+    </div>
 
-      <!-- Banco de palavras clicáveis -->
-      <div class="word-bank-area" id="word-bank-q11"></div>
+    <!-- EXERCÍCIO 13 (MONTAR DIÁLOGO 3: EM UMA FESTA) -->
+    <div class="exercise-card" id="q13">
+      <div class="question-text">13. Em uma festa: Responda ao comentário sobre a música:</div>
+      <div id="dialogue-container-q13"></div>
+    </div>
 
-      <div class="builder-actions">
-        <button class="btn-clear-sentence" id="clear-btn-q11" onclick="limparFraseDialogo('q11')">Limpar</button>
-        <button class="btn-check-sentence" id="check-btn-q11" onclick="verificarFraseDialogo('q11')">Verificar Resposta</button>
+    <!-- EXERCÍCIO 14 (MONTAR DIÁLOGO 4: COM COMIDA EM 2 ETAPAS) -->
+    <div class="exercise-card" id="q14">
+      <div class="question-text">14. Com comida: Monte as duas frases elogiando o prato e o bolo:</div>
+      <div id="dialogue-container-q14"></div>
+    </div>
+
+    <!-- EXERCÍCIO 15 (MONTAR DIÁLOGO 5: SIMULAÇÃO NO PONTO DE ÔNIBUS EM 3 ETAPAS) -->
+    <div class="exercise-card" id="q15">
+      <div class="question-text">15. Simulação no ponto de ônibus: Responda às 3 falas de María como Carlos:</div>
+      <div id="dialogue-container-q15"></div>
+    </div>
+
+    <!-- EXERCÍCIO 16 (CARDS DE FALA 1: CUMPRIMENTOS E APRESENTAÇÃO) -->
+    <div class="exercise-card" id="q16">
+      <div class="question-text">16. Pronúncia Rápida 1 (Cumprimentos): Fale cada palavra ou expressão conforme os cards trocam automaticamente:</div>
+      <div class="auto-speech-box" id="deck-box-q16">
+        <div class="speech-card-counter">6 Cards • Troca Automática</div>
+        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
+          Hola • Muchas gracias • Buenos días • Mucho gusto • Me llamo • Hasta luego
+        </div>
+        <button class="btn-start-deck" onclick="startSpeechDeck('q16', ['Hola', 'Muchas gracias', 'Buenos días', 'Mucho gusto', 'Me llamo', 'Hasta luego'])">🎙️ Iniciar Rodada 1</button>
       </div>
-      <div class="builder-feedback" id="feedback-q11"></div>
+    </div>
+
+    <!-- EXERCÍCIO 17 (CARDS DE FALA 2: CLIMA, VIAGEM E DIÁLOGOS) -->
+    <div class="exercise-card" id="q17">
+      <div class="question-text">17. Pronúncia Rápida 2 (Clima e Viagem): Fale cada palavra ou expressão em espanhol:</div>
+      <div class="auto-speech-box" id="deck-box-q17">
+        <div class="speech-card-counter">6 Cards • Troca Automática</div>
+        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
+          Paraguas • Hermoso • Vacaciones • Hace frío • Hace calor • Estoy perdido
+        </div>
+        <button class="btn-start-deck" onclick="startSpeechDeck('q17', ['Paraguas', 'Hermoso', 'Vacaciones', 'Hace frío', 'Hace calor', 'Estoy perdido'])">🎙️ Iniciar Rodada 2</button>
+      </div>
+    </div>
+
+    <!-- EXERCÍCIO 18 (CARDS DE FALA 3: RESTAURANTE E OBJETOS) -->
+    <div class="exercise-card" id="q18">
+      <div class="question-text">18. Pronúncia Rápida 3 (Restaurante e Objetos): Fale cada palavra em espanhol:</div>
+      <div class="auto-speech-box" id="deck-box-q18">
+        <div class="speech-card-counter">6 Cards • Troca Automática</div>
+        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
+          Restaurante • Cuchara • Tenedor • Cuchillo • Mesa • Autobús
+        </div>
+        <button class="btn-start-deck" onclick="startSpeechDeck('q18', ['Restaurante', 'Cuchara', 'Tenedor', 'Cuchillo', 'Mesa', 'Autobús'])">🎙️ Iniciar Rodada 3</button>
+      </div>
     </div>
 
   </div>
@@ -301,7 +355,7 @@
       <div style="font-size: 60px;">🏆</div>
       <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
       <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
-        Você completou todos os 11 exercícios e treinou sua pronúncia!
+        Você completou todos os 18 exercícios e treinou sua pronúncia!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
         🌟 +100 XP Ganhos | Progresso Salvo
@@ -363,8 +417,8 @@
 
     window.addEventListener('load', iniciarBaloesMascote);
 
-    // 2. CONTROLE DOS 11 EXERCÍCIOS
-    const totalQuestions = 11;
+    // 2. CONTROLE DOS 18 EXERCÍCIOS
+    const totalQuestions = 18;
     const completedQuestions = new Set();
 
     function updateProgressUI() {
@@ -407,6 +461,10 @@
     function startVoiceRecognition(expectedText, btnId, statusId, qId) {
       if (completedQuestions.has(qId)) return;
 
+      // Encerra qualquer deck automático ativo antes de ouvir um card individual
+      cleanupSpeechEngines();
+      activeDeck = null;
+
       palavraEsperadaAtual = expectedText;
       btnIdAtual = btnId;
       statusIdAtual = statusId;
@@ -446,7 +504,11 @@
     }
 
     function receberTextoVoz(textoOuvido) {
-      processarResultadoVoz(textoOuvido);
+      if (activeDeck && activeDeck.awaitingSpeech) {
+        handleDeckResult(textoOuvido, activeDeck.sessionId);
+      } else {
+        processarResultadoVoz(textoOuvido);
+      }
     }
 
     function processarResultadoVoz(transcript) {
@@ -507,6 +569,7 @@
     }
 
     function exitLesson() {
+      cleanupSpeechEngines();
       if (completedQuestions.size > 0) {
         saveUserProgress(completedQuestions.size * 10);
       }
@@ -562,77 +625,290 @@
       } catch (e) {}
     }
 
-    // 5. EXERCÍCIO DE MONTAR FRASES DO DIÁLOGO (Q11)
-    const palavrasDialogoQ11 = [
-      { id: 'w1', texto: 'bien', fala: 'bien' },
-      { id: 'w2', texto: 'muy', fala: 'muy' },
-      { id: 'w3', texto: 'genial', fala: 'genial' },
-      { id: 'w4', texto: 'gracias', fala: 'gracias' },
-      { id: 'w5', texto: '¿Y tú?', fala: '¿Y tú?' },
-      { id: 'w6', texto: 'No', fala: 'no' },
-      { id: 'w7', texto: 'hoy', fala: 'hoy' }
-    ];
+    // 5. SISTEMA REUTILIZÁVEL DE MONTAR DIÁLOGOS (1 OU MAIS ETAPAS POR CARD)
+    const configDialogos = {
+      q11: {
+        etapas: [
+          {
+            badge: 'Cumprimentos',
+            perguntaEs: '🗣️ ¿Cómo estás?',
+            perguntaPt: 'Como você está? (Ex: Estou bem, obrigado. E você? / Estou ótimo)',
+            palavraInicial: 'Estoy',
+            palavras: [
+              { id: 'w1', texto: 'bien', fala: 'bien' },
+              { id: 'w2', texto: 'muy', fala: 'muy' },
+              { id: 'w3', texto: 'genial', fala: 'genial' },
+              { id: 'w4', texto: 'gracias', fala: 'gracias' },
+              { id: 'w5', texto: '¿Y tú?', fala: '¿Y tú?' },
+              { id: 'w6', texto: 'No', fala: 'no' },
+              { id: 'w7', texto: 'hoy', fala: 'hoy' }
+            ],
+            validas: [
+              'bien', 'bien gracias', 'bien gracias ¿Y tú?',
+              'genial', 'genial gracias', 'genial gracias ¿Y tú?',
+              'muy bien', 'muy bien gracias', 'muy bien gracias ¿Y tú?',
+              'muy bien hoy', 'bien hoy'
+            ],
+            dicaExtra: (seq) => seq.includes('No')
+              ? '💡 Dica: Na frase negativa, o "No" vem antes de "estoy". Monte uma resposta positiva!'
+              : ''
+          }
+        ]
+      },
+      q12: {
+        etapas: [
+          {
+            badge: 'Parte 1 de 2 — Seu nome',
+            perguntaEs: '🗣️ ¡Hola! ¿Cómo te llamas?',
+            perguntaPt: 'Olá! Como você se chama? (Ex: Meu nome é Carlos / Ana)',
+            palavraInicial: 'Me',
+            palavras: [
+              { id: 'w1', texto: 'llamo', fala: 'llamo' },
+              { id: 'w2', texto: 'Carlos', fala: 'Carlos' },
+              { id: 'w3', texto: 'Ana', fala: 'Ana' },
+              { id: 'w4', texto: '¿Y tú?', fala: '¿Y tú?' },
+              { id: 'w5', texto: 'soy', fala: 'soy' }
+            ],
+            validas: [
+              'llamo Carlos', 'llamo Carlos ¿Y tú?',
+              'llamo Ana', 'llamo Ana ¿Y tú?'
+            ],
+            dicaExtra: (seq) => seq.includes('soy')
+              ? '💡 Dica: Como a frase já começa com "Me", use "llamo" (Me llamo...).'
+              : ''
+          },
+          {
+            badge: 'Parte 2 de 2 — Cortesia',
+            perguntaEs: '🗣️ Mucho gusto.',
+            perguntaPt: 'Muito prazer. (Responda: O prazer é meu)',
+            palavraInicial: 'El',
+            palavras: [
+              { id: 'w1', texto: 'gusto', fala: 'gusto' },
+              { id: 'w2', texto: 'es', fala: 'es' },
+              { id: 'w3', texto: 'mío', fala: 'mío' },
+              { id: 'w4', texto: 'mucho', fala: 'mucho' }
+            ],
+            validas: ['gusto es mío']
+          }
+        ]
+      },
+      q13: {
+        etapas: [
+          {
+            badge: 'Em uma festa',
+            perguntaEs: '🎵 Me gusta esta música.',
+            perguntaPt: 'Eu gosto desta música. (Responda: Eu também. É uma música ótima)',
+            palavraInicial: 'A',
+            palavras: [
+              { id: 'w1', texto: 'mí', fala: 'mí' },
+              { id: 'w2', texto: 'también.', fala: 'también' },
+              { id: 'w3', texto: 'Es', fala: 'es' },
+              { id: 'w4', texto: 'una', fala: 'una' },
+              { id: 'w5', texto: 'canción', fala: 'canción' },
+              { id: 'w6', texto: 'genial', fala: 'genial' }
+            ],
+            validas: [
+              'mí también.',
+              'mí también. Es una canción genial'
+            ]
+          }
+        ]
+      },
+      q14: {
+        etapas: [
+          {
+            badge: 'Parte 1 de 2 — O prato principal',
+            perguntaEs: '🍽️ ¿Qué te parece la comida?',
+            perguntaPt: 'O que você acha da comida? (Monte: A comida parece muito boa)',
+            palavraInicial: 'La',
+            palavras: [
+              { id: 'w1', texto: 'comida', fala: 'comida' },
+              { id: 'w2', texto: 'se ve', fala: 'se ve' },
+              { id: 'w3', texto: 'muy', fala: 'muy' },
+              { id: 'w4', texto: 'buena', fala: 'buena' },
+              { id: 'w5', texto: 'delicioso', fala: 'delicioso' }
+            ],
+            validas: [
+              'comida se ve muy buena',
+              'comida se ve buena'
+            ]
+          },
+          {
+            badge: 'Parte 2 de 2 — A sobremesa',
+            perguntaEs: '🍰 ¿Y el postre?',
+            perguntaPt: 'E a sobremesa? (Monte: Este bolo está delicioso)',
+            palavraInicial: 'Este',
+            palavras: [
+              { id: 'w1', texto: 'pastel', fala: 'pastel' },
+              { id: 'w2', texto: 'está', fala: 'está' },
+              { id: 'w3', texto: 'delicioso', fala: 'delicioso' },
+              { id: 'w4', texto: 'muy', fala: 'muy' }
+            ],
+            validas: [
+              'pastel está delicioso',
+              'pastel está muy delicioso'
+            ]
+          }
+        ]
+      },
+      q15: {
+        etapas: [
+          {
+            badge: 'Turno 1 de 3 — O clima',
+            perguntaEs: '👩 María: Mmm, hace un poco de frío hoy.',
+            perguntaPt: 'Hum, está um pouco frio hoje. (Carlos: Sim, um pouco. Espero que o ônibus chegue logo)',
+            palavraInicial: 'Sí,',
+            palavras: [
+              { id: 'w1', texto: 'un poco.', fala: 'un poco' },
+              { id: 'w2', texto: 'Espero que', fala: 'espero que' },
+              { id: 'w3', texto: 'el autobús', fala: 'el autobús' },
+              { id: 'w4', texto: 'llegue', fala: 'llegue' },
+              { id: 'w5', texto: 'pronto', fala: 'pronto' }
+            ],
+            validas: [
+              'un poco. Espero que el autobús llegue pronto',
+              'un poco.'
+            ]
+          },
+          {
+            badge: 'Turno 2 de 3 — O número do ônibus',
+            perguntaEs: '👩 María: Yo también. ¿Espera usted el autobús número cinco?',
+            perguntaPt: 'Eu também. O senhor espera o ônibus número cinco? (Carlos: Sim, o número cinco. E você?)',
+            palavraInicial: 'Sí,',
+            palavras: [
+              { id: 'w1', texto: 'el', fala: 'el' },
+              { id: 'w2', texto: 'número', fala: 'número' },
+              { id: 'w3', texto: 'cinco.', fala: 'cinco' },
+              { id: 'w4', texto: '¿Y tú?', fala: '¿Y tú?' }
+            ],
+            validas: [
+              'el número cinco.',
+              'el número cinco. ¿Y tú?'
+            ]
+          },
+          {
+            badge: 'Turno 3 de 3 — Apresentação',
+            perguntaEs: '👩 María: El mismo. ¡Qué coincidencia! Me llamo María.',
+            perguntaPt: 'O mesmo. Que coincidência! Meu nome é María. (Carlos: Eu sou Carlos. Prazer em conhecê-la, María)',
+            palavraInicial: 'Yo',
+            palavras: [
+              { id: 'w1', texto: 'soy', fala: 'soy' },
+              { id: 'w2', texto: 'Carlos.', fala: 'Carlos' },
+              { id: 'w3', texto: 'Encantado', fala: 'encantado' },
+              { id: 'w4', texto: 'de conocerte,', fala: 'de conocerte' },
+              { id: 'w5', texto: 'María', fala: 'María' }
+            ],
+            validas: [
+              'soy Carlos.',
+              'soy Carlos. Encantado de conocerte, María'
+            ]
+          }
+        ]
+      }
+    };
 
-    let selecionadasQ11 = [];
+    const estadoDialogos = {};
 
-    function iniciarExercicioDialogo() {
-      const bank = document.getElementById('word-bank-q11');
-      if (!bank) return;
-      bank.innerHTML = '';
+    function iniciarExerciciosDialogo() {
+      Object.keys(configDialogos).forEach((qId) => {
+        const container = document.getElementById(`dialogue-container-${qId}`);
+        if (!container) return;
 
-      palavrasDialogoQ11.forEach((item) => {
-        const btn = document.createElement('button');
-        btn.className = 'word-chip';
-        btn.id = `chip-${item.id}`;
-        btn.textContent = item.texto;
-        btn.onclick = () => alternarPalavraDialogo('q11', item);
-        bank.appendChild(btn);
+        estadoDialogos[qId] = {
+          etapasConcluidas: new Set(),
+          selecionadas: {}
+        };
+
+        container.innerHTML = '';
+        const etapas = configDialogos[qId].etapas;
+
+        etapas.forEach((etapa, idx) => {
+          estadoDialogos[qId].selecionadas[idx] = [];
+
+          const stepDiv = document.createElement('div');
+          stepDiv.className = 'dialogue-step-block';
+          stepDiv.id = `step-${qId}-${idx}`;
+          // Se houver mais de 1 etapa, mostra a próxima apenas após concluir a anterior
+          if (idx > 0) stepDiv.style.display = 'none';
+
+          stepDiv.innerHTML = `
+            <div class="dialogue-step-badge">${etapa.badge}</div>
+            <div class="dialogue-prompt">
+              <div class="dialogue-prompt-es">${etapa.perguntaEs}</div>
+              <div class="dialogue-prompt-pt">${etapa.perguntaPt}</div>
+            </div>
+            <div class="sentence-builder-area" id="builder-area-${qId}-${idx}">
+              <span class="fixed-word-chip">${etapa.palavraInicial}</span>
+            </div>
+            <div class="word-bank-area" id="word-bank-${qId}-${idx}"></div>
+            <div class="builder-actions">
+              <button class="btn-clear-sentence" onclick="limparEtapaDialogo('${qId}', ${idx})">Limpar</button>
+              <button class="btn-check-sentence" onclick="verificarEtapaDialogo('${qId}', ${idx})">Verificar Resposta</button>
+            </div>
+            <div class="builder-feedback" id="feedback-${qId}-${idx}"></div>
+          `;
+
+          container.appendChild(stepDiv);
+
+          const bank = document.getElementById(`word-bank-${qId}-${idx}`);
+          etapa.palavras.forEach((item) => {
+            const btn = document.createElement('button');
+            btn.className = 'word-chip';
+            btn.id = `chip-${qId}-${idx}-${item.id}`;
+            btn.textContent = item.texto;
+            btn.onclick = () => alternarPalavraEtapa(qId, idx, item);
+            bank.appendChild(btn);
+          });
+        });
       });
     }
 
-    function alternarPalavraDialogo(qId, item) {
-      if (completedQuestions.has(qId)) return;
+    function alternarPalavraEtapa(qId, idx, item) {
+      if (completedQuestions.has(qId) || estadoDialogos[qId].etapasConcluidas.has(idx)) return;
 
-      // Fala a palavra em voz alta em espanhol ao clicar
       hablarPronunciacionCorrecta(item.fala);
 
-      const area = document.getElementById(`builder-area-${qId}`);
-      const feedback = document.getElementById(`feedback-${qId}`);
+      const area = document.getElementById(`builder-area-${qId}-${idx}`);
+      const feedback = document.getElementById(`feedback-${qId}-${idx}`);
       area.classList.remove('wrong');
       feedback.textContent = '';
 
-      const idx = selecionadasQ11.findIndex(p => p.id === item.id);
-      const chipBanco = document.getElementById(`chip-${item.id}`);
+      const lista = estadoDialogos[qId].selecionadas[idx];
+      const pos = lista.findIndex(p => p.id === item.id);
+      const chipBanco = document.getElementById(`chip-${qId}-${idx}-${item.id}`);
 
-      if (idx === -1) {
-        selecionadasQ11.push(item);
+      if (pos === -1) {
+        lista.push(item);
         chipBanco.style.display = 'none';
 
         const chipResposta = document.createElement('button');
         chipResposta.className = 'word-chip in-answer';
-        chipResposta.id = `ans-${item.id}`;
+        chipResposta.id = `ans-${qId}-${idx}-${item.id}`;
         chipResposta.textContent = item.texto;
-        chipResposta.onclick = () => alternarPalavraDialogo(qId, item);
+        chipResposta.onclick = () => alternarPalavraEtapa(qId, idx, item);
         area.appendChild(chipResposta);
       } else {
-        selecionadasQ11.splice(idx, 1);
-        const chipResposta = document.getElementById(`ans-${item.id}`);
+        lista.splice(pos, 1);
+        const chipResposta = document.getElementById(`ans-${qId}-${idx}-${item.id}`);
         if (chipResposta) chipResposta.remove();
         chipBanco.style.display = 'inline-block';
       }
     }
 
-    function limparFraseDialogo(qId) {
-      if (completedQuestions.has(qId)) return;
-      selecionadasQ11 = [];
-      const area = document.getElementById(`builder-area-${qId}`);
-      const feedback = document.getElementById(`feedback-${qId}`);
+    function limparEtapaDialogo(qId, idx) {
+      if (completedQuestions.has(qId) || estadoDialogos[qId].etapasConcluidas.has(idx)) return;
+
+      const etapa = configDialogos[qId].etapas[idx];
+      estadoDialogos[qId].selecionadas[idx] = [];
+
+      const area = document.getElementById(`builder-area-${qId}-${idx}`);
+      const feedback = document.getElementById(`feedback-${qId}-${idx}`);
       area.classList.remove('wrong');
-      area.innerHTML = '<span class="fixed-word-chip">Estoy</span>';
+      area.innerHTML = `<span class="fixed-word-chip">${etapa.palavraInicial}</span>`;
       feedback.textContent = '';
 
-      palavrasDialogoQ11.forEach((item) => {
-        const chipBanco = document.getElementById(`chip-${item.id}`);
+      etapa.palavras.forEach((item) => {
+        const chipBanco = document.getElementById(`chip-${qId}-${idx}-${item.id}`);
         if (chipBanco) chipBanco.style.display = 'inline-block';
       });
     }
@@ -656,56 +932,259 @@
       } catch (e) {}
     }
 
-    function verificarFraseDialogo(qId) {
-      if (completedQuestions.has(qId)) return;
+    function verificarEtapaDialogo(qId, idx) {
+      if (completedQuestions.has(qId) || estadoDialogos[qId].etapasConcluidas.has(idx)) return;
 
-      const area = document.getElementById(`builder-area-${qId}`);
-      const feedback = document.getElementById(`feedback-${qId}`);
-      const sequencia = selecionadasQ11.map(p => p.texto).join(' ');
+      const cfg = configDialogos[qId];
+      const etapa = cfg.etapas[idx];
+      const area = document.getElementById(`builder-area-${qId}-${idx}`);
+      const feedback = document.getElementById(`feedback-${qId}-${idx}`);
+      const sequencia = estadoDialogos[qId].selecionadas[idx].map(p => p.texto).join(' ');
 
-      // Variações válidas que começam com "Estoy"
-      const combinacoesValidas = [
-        'bien',
-        'bien gracias',
-        'bien gracias ¿Y tú?',
-        'genial',
-        'genial gracias',
-        'genial gracias ¿Y tú?',
-        'muy bien',
-        'muy bien gracias',
-        'muy bien gracias ¿Y tú?',
-        'muy bien hoy',
-        'bien hoy'
-      ];
+      if (etapa.validas.includes(sequencia)) {
+        const fraseMontada = `${etapa.palavraInicial} ${sequencia}`.replace(/\s+/g, ' ').trim();
+        const fraseFinal = /[.?!]$/.test(fraseMontada) ? fraseMontada : `${fraseMontada}.`;
 
-      if (combinacoesValidas.includes(sequencia)) {
-        const fraseCompleta = `Estoy ${sequencia.replace(' gracias', ', gracias').replace(' ¿Y tú?', '. ¿Y tú?')}.`;
         area.classList.remove('wrong');
         area.classList.add('correct');
         feedback.style.color = '#1b7f75';
-        feedback.textContent = `✅ ¡Excelente! "${fraseCompleta}"`;
+        feedback.textContent = `✅ ¡Excelente! "${fraseFinal}"`;
 
-        // Trava os botões do exercício
-        document.querySelectorAll(`#q11 button`).forEach(b => b.disabled = true);
+        // Trava os botões desta etapa
+        document.querySelectorAll(`#step-${qId}-${idx} button`).forEach(b => b.disabled = true);
+        estadoDialogos[qId].etapasConcluidas.add(idx);
 
         playCorrectTone();
-        setTimeout(() => hablarPronunciacionCorrecta(fraseCompleta), 250);
+        setTimeout(() => hablarPronunciacionCorrecta(fraseFinal), 250);
 
-        completedQuestions.add(qId);
-        updateProgressUI();
-        checkCompletion();
-      } else if (sequencia.includes('No')) {
-        area.classList.add('wrong');
-        feedback.style.color = '#e63946';
-        feedback.textContent = '💡 Dica: Na frase negativa, o "No" vem antes de "estoy". Tente montar uma resposta positiva!';
+        // Se existir uma próxima etapa dentro do mesmo card, revela ela
+        const proximaEtapa = document.getElementById(`step-${qId}-${idx + 1}`);
+        if (proximaEtapa) {
+          proximaEtapa.style.display = 'block';
+        }
+
+        // Conclui o card inteiro somente quando todas as etapas do card forem vencidas
+        if (estadoDialogos[qId].etapasConcluidas.size >= cfg.etapas.length) {
+          completedQuestions.add(qId);
+          updateProgressUI();
+          checkCompletion();
+        }
       } else {
         area.classList.add('wrong');
         feedback.style.color = '#e63946';
-        feedback.textContent = '❌ Ordem incorreta ou incompleta. Toque em "Limpar" e tente novamente!';
+        const dica = etapa.dicaExtra ? etapa.dicaExtra(sequencia) : '';
+        feedback.textContent = dica || '❌ Ordem incorreta ou incompleta. Toque em "Limpar" e tente novamente!';
       }
     }
 
-    window.addEventListener('load', iniciarExercicioDialogo);
+    window.addEventListener('load', iniciarExerciciosDialogo);
+
+    // 6. CARDS DE FALA DE TROCA AUTOMÁTICA (COMPATÍVEL COM APP INVENTOR E NAVEGADOR)
+    let activeDeck = null;
+    let currentRecognition = null;
+    let deckTimer = null;
+    let listenSessionCounter = 0;
+
+    function cleanupSpeechEngines() {
+      if (deckTimer) {
+        clearTimeout(deckTimer);
+        deckTimer = null;
+      }
+      if (currentRecognition) {
+        try {
+          currentRecognition.onresult = null;
+          currentRecognition.onerror = null;
+          currentRecognition.onend = null;
+          currentRecognition.abort();
+        } catch (e) {}
+        currentRecognition = null;
+      }
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+    }
+
+    function startSpeechDeck(qId, wordList) {
+      if (completedQuestions.has(qId)) return;
+      cleanupSpeechEngines();
+
+      activeDeck = {
+        qId: qId,
+        queue: wordList.map(w => ({ word: w, isRetry: false })),
+        index: 0,
+        attemptsOnCurrent: 0,
+        hits: 0,
+        misses: 0,
+        awaitingSpeech: false,
+        sessionId: 0
+      };
+
+      renderSpeechCard();
+      deckTimer = setTimeout(() => triggerDeckListen(), 600);
+    }
+
+    function renderSpeechCard() {
+      if (!activeDeck) return;
+      const box = document.getElementById(`deck-box-${activeDeck.qId}`);
+      const currentItem = activeDeck.queue[activeDeck.index];
+      const retryBadge = currentItem.isRetry ? ' (Tentativa Final)' : '';
+
+      box.className = 'auto-speech-box';
+      box.innerHTML = `
+        <div class="speech-card-counter">Card ${activeDeck.index + 1} de ${activeDeck.queue.length}${retryBadge}</div>
+        <div class="speech-target-big">${currentItem.word.toUpperCase()}</div>
+        <button class="mic-btn" id="deck-mic-${activeDeck.qId}" onclick="manualTriggerDeckListen()">🎙️</button>
+        <div class="speech-status-msg" id="deck-status-${activeDeck.qId}">Prepare-se...</div>
+      `;
+    }
+
+    function manualTriggerDeckListen() {
+      if (!activeDeck || activeDeck.awaitingSpeech) return;
+      if (deckTimer) clearTimeout(deckTimer);
+      triggerDeckListen();
+    }
+
+    function triggerDeckListen() {
+      if (!activeDeck) return;
+      const currentItem = activeDeck.queue[activeDeck.index];
+      const micBtn = document.getElementById(`deck-mic-${activeDeck.qId}`);
+      const statusEl = document.getElementById(`deck-status-${activeDeck.qId}`);
+
+      listenSessionCounter++;
+      const sessionId = listenSessionCounter;
+      activeDeck.sessionId = sessionId;
+      activeDeck.awaitingSpeech = true;
+
+      if (micBtn) micBtn.classList.add('listening');
+      if (statusEl) {
+        statusEl.style.color = '#e63946';
+        statusEl.textContent = `🎙️ Ouvindo... Diga "${currentItem.word.toUpperCase()}"`;
+      }
+
+      // Ponte nativa do App Inventor / Kodular
+      if (window.AppInventor) {
+        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
+        return;
+      }
+
+      // Fallback para navegador web
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        setTimeout(() => handleDeckResult(currentItem.word, sessionId), 700);
+        return;
+      }
+
+      const rec = new SpeechRecognition();
+      rec.lang = 'es-ES';
+      currentRecognition = rec;
+
+      rec.onresult = (event) => {
+        if (micBtn) micBtn.classList.remove('listening');
+        handleDeckResult(event.results[0][0].transcript, sessionId);
+      };
+
+      rec.onerror = () => {
+        if (micBtn) micBtn.classList.remove('listening');
+        handleDeckResult('', sessionId);
+      };
+
+      rec.start();
+    }
+
+    function normalizarTextoDeck(txt) {
+      return txt.toLowerCase().trim()
+        .replace(/[¿?¡!.,]/g, '')
+        .replace(/[áéíóú]/g, m => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' }[m]))
+        .replace(/ñ/g, 'n')
+        .replace(/\bestou\b/g, 'estoy')
+        .replace(/\bola\b/g, 'hola')
+        .replace(/\bgrasias\b/g, 'gracias');
+    }
+
+    function handleDeckResult(transcript, sessionId) {
+      if (!activeDeck || !activeDeck.awaitingSpeech || activeDeck.sessionId !== sessionId) return;
+      activeDeck.awaitingSpeech = false;
+
+      const currentItem = activeDeck.queue[activeDeck.index];
+      const box = document.getElementById(`deck-box-${activeDeck.qId}`);
+      const statusEl = document.getElementById(`deck-status-${activeDeck.qId}`);
+      const micBtn = document.getElementById(`deck-mic-${activeDeck.qId}`);
+      if (micBtn) micBtn.classList.remove('listening');
+
+      const targetNorm = normalizarTextoDeck(currentItem.word);
+      const spokenNorm = normalizarTextoDeck(transcript || '');
+
+      if (spokenNorm !== '' && (spokenNorm.includes(targetNorm) || (targetNorm.includes(spokenNorm) && spokenNorm.length >= 3))) {
+        activeDeck.hits++;
+        box.classList.add('hit');
+        if (statusEl) {
+          statusEl.style.color = '#1b7f75';
+          statusEl.textContent = `✅ ¡Muy bien! ("${transcript}")`;
+        }
+        playCorrectTone();
+        deckTimer = setTimeout(() => advanceDeckCard(), 900);
+      } else {
+        activeDeck.attemptsOnCurrent++;
+        box.classList.add('miss');
+
+        if (activeDeck.attemptsOnCurrent < 2 && !currentItem.isRetry) {
+          if (statusEl) {
+            statusEl.style.color = '#e63946';
+            statusEl.textContent = transcript
+              ? `Ouvi "${transcript}". Tente novamente!`
+              : 'Não ouvi bem. Tente novamente!';
+          }
+          deckTimer = setTimeout(() => {
+            box.classList.remove('miss');
+            triggerDeckListen();
+          }, 1100);
+        } else {
+          // Se errar e ainda não foi reenviado para o fim da fila, joga uma vez para o final
+          if (!currentItem.isRetry) {
+            activeDeck.queue.push({ word: currentItem.word, isRetry: true });
+          } else {
+            activeDeck.misses++;
+          }
+          if (statusEl) {
+            statusEl.style.color = '#e63946';
+            statusEl.textContent = `⏭️ Pulando "${currentItem.word}" para o final...`;
+          }
+          deckTimer = setTimeout(() => advanceDeckCard(), 1000);
+        }
+      }
+    }
+
+    function advanceDeckCard() {
+      if (!activeDeck) return;
+      activeDeck.index++;
+      activeDeck.attemptsOnCurrent = 0;
+
+      if (activeDeck.index < activeDeck.queue.length) {
+        renderSpeechCard();
+        deckTimer = setTimeout(() => triggerDeckListen(), 600);
+      } else {
+        finishSpeechDeck();
+      }
+    }
+
+    function finishSpeechDeck() {
+      if (!activeDeck) return;
+      const qId = activeDeck.qId;
+      const hits = activeDeck.hits;
+      const box = document.getElementById(`deck-box-${qId}`);
+
+      box.className = 'auto-speech-box hit';
+      box.innerHTML = `
+        <div style="font-size:32px;">🎉</div>
+        <div style="font-size:16px; font-weight:900; color:#1b7f75;">Rodada Concluída!</div>
+        <div style="font-size:13px; font-weight:700; color:#0b2545;">Você acertou ${hits} cards nesta rodada.</div>
+      `;
+
+      completedQuestions.add(qId);
+      updateProgressUI();
+      checkCompletion();
+      activeDeck = null;
+    }
   </script>
 </body>
 </html>
