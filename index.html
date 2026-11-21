@@ -57,6 +57,23 @@
     .btn-secondary { background: #e1e9f0; color: #0b2545; border: none; padding: 12px; border-radius: 12px; font-weight: 900; flex: 1; cursor: pointer; }
     #victory-modal .modal-box { max-width: 340px; }
     .btn-continue { background: #ffb703; color: #0b2545; border: none; padding: 14px 28px; border-radius: 50px; font-weight: 900; font-size: 16px; margin-top: 20px; cursor: pointer; width: 100%; }
+  /* --- EXERCÍCIO DE MONTAR DIÁLOGO --- */
+    .dialogue-prompt { background: #134074; color: #ffffff; padding: 12px 16px; border-radius: 14px; margin-bottom: 12px; }
+    .dialogue-prompt-es { font-size: 16px; font-weight: 900; color: #ffb703; }
+    .dialogue-prompt-pt { font-size: 12px; font-weight: 700; color: #b8cde0; margin-top: 2px; }
+    .sentence-builder-area { min-height: 54px; background: #eef4f8; border: 2px dashed #b8cde0; border-radius: 14px; padding: 8px 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; transition: all 0.2s; }
+    .sentence-builder-area.correct { background: #e6faf8; border: 2px solid #2ec4b6; }
+    .sentence-builder-area.wrong { background: #ffeaea; border: 2px solid #e63946; }
+    .fixed-word-chip { background: #0b2545; color: #ffb703; padding: 7px 12px; border-radius: 10px; font-weight: 900; font-size: 14px; }
+    .word-bank-area { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .word-chip { background: #ffffff; border: 2px solid #d0e1f9; color: #0b2545; padding: 7px 13px; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.06); transition: all 0.15s; }
+    .word-chip:active { transform: scale(0.95); }
+    .word-chip.in-answer { background: #2ec4b6; border-color: #2ec4b6; color: #ffffff; }
+    .word-chip:disabled { cursor: default; opacity: 0.9; }
+    .builder-actions { display: flex; gap: 8px; }
+    .btn-check-sentence { background: #ffb703; color: #0b2545; border: none; padding: 10px 16px; border-radius: 12px; font-weight: 900; font-size: 14px; flex: 1; cursor: pointer; }
+    .btn-clear-sentence { background: #e1e9f0; color: #0b2545; border: none; padding: 10px 14px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; }
+    .builder-feedback { font-size: 13px; font-weight: 800; margin-top: 8px; min-height: 18px; }
   </style>
 </head>
 <body>
@@ -277,7 +294,29 @@
         <div id="status5" style="font-size:13px; font-weight:800; color:#6c757d;">Toque para falar</div>
       </div>
     </div>
+<!-- EXERCÍCIO 16 (MONTAR RESPOSTA DO DIÁLOGO) -->
+    <div class="exercise-card" id="q16">
+      <div class="question-text">16. Monte uma resposta para a pergunta abaixo tocando nas palavras na ordem certa:</div>
+      
+      <div class="dialogue-prompt">
+        <div class="dialogue-prompt-es">🗣️ ¿Cómo estás?</div>
+        <div class="dialogue-prompt-pt">Como você está? (Ex: Estou bem, obrigado. E você? / Estou ótimo / Estou muito bem)</div>
+      </div>
 
+      <!-- Área onde a frase é montada (com "Estoy" já pronto) -->
+      <div class="sentence-builder-area" id="builder-area-q16">
+        <span class="fixed-word-chip">Estoy</span>
+      </div>
+
+      <!-- Banco de palavras clicáveis -->
+      <div class="word-bank-area" id="word-bank-q16"></div>
+
+      <div class="builder-actions">
+        <button class="btn-clear-sentence" id="clear-btn-q16" onclick="limparFraseDialogo('q16')">Limpar</button>
+        <button class="btn-check-sentence" id="check-btn-q16" onclick="verificarFraseDialogo('q16')">Verificar Resposta</button>
+      </div>
+      <div class="builder-feedback" id="feedback-q16"></div>
+    </div>
   </div>
 
   <!-- MODAL DE VITÓRIA -->
@@ -348,8 +387,8 @@
 
     window.addEventListener('load', iniciarBaloesMascote);
 
-    // 2. CONTROLE DOS 15 EXERCÍCIOS
-    const totalQuestions = 15;
+    // 2. CONTROLE DOS 16 EXERCÍCIOS
+    const totalQuestions = 16;
     const completedQuestions = new Set();
 
     function updateProgressUI() {
@@ -546,6 +585,150 @@
         });
       } catch (e) {}
     }
+    // 5. EXERCÍCIO DE MONTAR FRASES DO DIÁLOGO (Q16)
+    const palavrasDialogoQ16 = [
+      { id: 'w1', texto: 'bien', fala: 'bien' },
+      { id: 'w2', texto: 'muy', fala: 'muy' },
+      { id: 'w3', texto: 'genial', fala: 'genial' },
+      { id: 'w4', texto: 'gracias', fala: 'gracias' },
+      { id: 'w5', texto: '¿Y tú?', fala: '¿Y tú?' },
+      { id: 'w6', texto: 'No', fala: 'no' },
+      { id: 'w7', texto: 'hoy', fala: 'hoy' }
+    ];
+
+    let selecionadasQ16 = [];
+
+    function iniciarExercicioDialogo() {
+      const bank = document.getElementById('word-bank-q16');
+      if (!bank) return;
+      bank.innerHTML = '';
+
+      palavrasDialogoQ16.forEach((item) => {
+        const btn = document.createElement('button');
+        btn.className = 'word-chip';
+        btn.id = `chip-${item.id}`;
+        btn.textContent = item.texto;
+        btn.onclick = () => alternarPalavraDialogo('q16', item);
+        bank.appendChild(btn);
+      });
+    }
+
+    function alternarPalavraDialogo(qId, item) {
+      if (completedQuestions.has(qId)) return;
+
+      // Fala a palavra em voz alta em espanhol ao clicar
+      hablarPronunciacionCorrecta(item.fala);
+
+      const area = document.getElementById(`builder-area-${qId}`);
+      const feedback = document.getElementById(`feedback-${qId}`);
+      area.classList.remove('wrong');
+      feedback.textContent = '';
+
+      const idx = selecionadasQ16.findIndex(p => p.id === item.id);
+      const chipBanco = document.getElementById(`chip-${item.id}`);
+
+      if (idx === -1) {
+        selecionadasQ16.push(item);
+        chipBanco.style.display = 'none';
+
+        const chipResposta = document.createElement('button');
+        chipResposta.className = 'word-chip in-answer';
+        chipResposta.id = `ans-${item.id}`;
+        chipResposta.textContent = item.texto;
+        chipResposta.onclick = () => alternarPalavraDialogo(qId, item);
+        area.appendChild(chipResposta);
+      } else {
+        selecionadasQ16.splice(idx, 1);
+        const chipResposta = document.getElementById(`ans-${item.id}`);
+        if (chipResposta) chipResposta.remove();
+        chipBanco.style.display = 'inline-block';
+      }
+    }
+
+    function limparFraseDialogo(qId) {
+      if (completedQuestions.has(qId)) return;
+      selecionadasQ16 = [];
+      const area = document.getElementById(`builder-area-${qId}`);
+      const feedback = document.getElementById(`feedback-${qId}`);
+      area.classList.remove('wrong');
+      area.innerHTML = '<span class="fixed-word-chip">Estoy</span>';
+      feedback.textContent = '';
+
+      palavrasDialogoQ16.forEach((item) => {
+        const chipBanco = document.getElementById(`chip-${item.id}`);
+        if (chipBanco) chipBanco.style.display = 'inline-block';
+      });
+    }
+
+    function playCorrectTone() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        [523.25, 783.99].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.1 + 0.3);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.1);
+          osc.stop(ctx.currentTime + i * 0.1 + 0.3);
+        });
+      } catch (e) {}
+    }
+
+    function verificarFraseDialogo(qId) {
+      if (completedQuestions.has(qId)) return;
+
+      const area = document.getElementById(`builder-area-${qId}`);
+      const feedback = document.getElementById(`feedback-${qId}`);
+      const sequencia = selecionadasQ16.map(p => p.texto).join(' ');
+
+      // Variações válidas que começam com "Estoy"
+      const combinacoesValidas = [
+        'bien',
+        'bien gracias',
+        'bien gracias ¿Y tú?',
+        'genial',
+        'genial gracias',
+        'genial gracias ¿Y tú?',
+        'muy bien',
+        'muy bien gracias',
+        'muy bien gracias ¿Y tú?',
+        'muy bien hoy',
+        'bien hoy'
+      ];
+
+      if (combinacoesValidas.includes(sequencia)) {
+        const fraseCompleta = `Estoy ${sequencia.replace(' gracias', ', gracias').replace(' ¿Y tú?', '. ¿Y tú?')}.`;
+        area.classList.remove('wrong');
+        area.classList.add('correct');
+        feedback.style.color = '#1b7f75';
+        feedback.textContent = `✅ ¡Excelente! "${fraseCompleta}"`;
+
+        // Trava os botões do exercício
+        document.querySelectorAll(`#q16 button`).forEach(b => b.disabled = true);
+
+        playCorrectTone();
+        setTimeout(() => hablarPronunciacionCorrecta(fraseCompleta), 250);
+
+        completedQuestions.add(qId);
+        updateProgressUI();
+        checkCompletion();
+      } else if (sequencia.includes('No')) {
+        area.classList.add('wrong');
+        feedback.style.color = '#e63946';
+        feedback.textContent = '💡 Dica: Na frase negativa, o "No" vem antes de "estoy". Tente montar uma resposta positiva!';
+      } else {
+        area.classList.add('wrong');
+        feedback.style.color = '#e63946';
+        feedback.textContent = '❌ Ordem incorreta ou incompleta. Toque em "Limpar" e tente novamente!';
+      }
+    }
+
+    window.addEventListener('load', iniciarExercicioDialogo);
   </script>
 </body>
 </html>
