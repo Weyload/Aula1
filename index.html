@@ -86,14 +86,17 @@
     .dialogue-step-block:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
     .dialogue-step-badge { display: inline-block; background: #ffb703; color: #0b2545; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; text-transform: uppercase; }
 
-    /* --- CARDS DE FALA DE TROCA AUTOMÁTICA (DUPLAS DE PALAVRAS) --- */
-    .auto-speech-box { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 18px; background: #eef4f8; border: 2px solid #d0e1f9; border-radius: 16px; transition: all 0.25s ease; }
-    .auto-speech-box.hit { background: #e6faf8; border-color: #2ec4b6; }
-    .auto-speech-box.miss { background: #ffeaea; border-color: #e63946; }
-    .speech-card-counter { background: #134074; color: #ffb703; font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .speech-target-big { font-size: 24px; font-weight: 900; color: #0b2545; text-align: center; letter-spacing: 0.5px; }
-    .speech-status-msg { font-size: 13px; font-weight: 800; color: #5c677d; text-align: center; min-height: 20px; }
-    .btn-start-deck { background: #ffb703; color: #0b2545; border: none; padding: 12px 22px; border-radius: 14px; font-weight: 900; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 183, 3, 0.35); }
+    /* --- EXERCÍCIO DE DUPLAS DE PALAVRAS (COMBINAR PARES PT <-> ES) --- */
+    .pairs-columns-header { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+    .pairs-col-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: #5c677d; text-align: center; background: #eef4f8; padding: 4px 8px; border-radius: 8px; }
+    .pairs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pairs-col { display: flex; flex-direction: column; gap: 9px; }
+    .pair-btn { background: #eef4f8; border: 2px solid #d0e1f9; color: #0b2545; padding: 11px 10px; border-radius: 12px; font-size: 13px; font-weight: 800; text-align: center; cursor: pointer; transition: all 0.18s ease; min-height: 46px; display: flex; align-items: center; justify-content: center; }
+    .pair-btn:active { transform: scale(0.97); }
+    .pair-btn.selected { background: #fff3cd; border-color: #ffb703; color: #0b2545; box-shadow: 0 3px 10px rgba(255, 183, 3, 0.35); }
+    .pair-btn.matched { background: #2ec4b6 !important; border-color: #2ec4b6 !important; color: #ffffff !important; cursor: default; opacity: 0.92; }
+    .pair-btn.wrong-flash { background: #e63946 !important; border-color: #e63946 !important; color: #ffffff !important; }
+    .pairs-status { font-size: 13px; font-weight: 800; color: #5c677d; text-align: center; margin-top: 12px; min-height: 18px; }
   </style>
 </head>
 <body>
@@ -311,40 +314,22 @@
       <div id="dialogue-container-q15"></div>
     </div>
 
-    <!-- EXERCÍCIO 16 (CARDS DE FALA 1: CUMPRIMENTOS E APRESENTAÇÃO) -->
+    <!-- EXERCÍCIO 16 (DUPLAS DE PALAVRAS 1: CUMPRIMENTOS E APRESENTAÇÃO) -->
     <div class="exercise-card" id="q16">
-      <div class="question-text">16. Pronúncia Rápida 1 (Cumprimentos): Fale cada palavra ou expressão conforme os cards trocam automaticamente:</div>
-      <div class="auto-speech-box" id="deck-box-q16">
-        <div class="speech-card-counter">6 Cards • Troca Automática</div>
-        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
-          Hola • Muchas gracias • Buenos días • Mucho gusto • Me llamo • Hasta luego
-        </div>
-        <button class="btn-start-deck" onclick="startSpeechDeck('q16', ['Hola', 'Muchas gracias', 'Buenos días', 'Mucho gusto', 'Me llamo', 'Hasta luego'])">🎙️ Iniciar Rodada 1</button>
-      </div>
+      <div class="question-text">16. Combine os pares (Cumprimentos): Toque na palavra em português e depois na tradução em espanhol:</div>
+      <div id="pairs-container-q16"></div>
     </div>
 
-    <!-- EXERCÍCIO 17 (CARDS DE FALA 2: CLIMA, VIAGEM E DIÁLOGOS) -->
+    <!-- EXERCÍCIO 17 (DUPLAS DE PALAVRAS 2: CLIMA, VIAGEM E EXPRESSÕES) -->
     <div class="exercise-card" id="q17">
-      <div class="question-text">17. Pronúncia Rápida 2 (Clima e Viagem): Fale cada palavra ou expressão em espanhol:</div>
-      <div class="auto-speech-box" id="deck-box-q17">
-        <div class="speech-card-counter">6 Cards • Troca Automática</div>
-        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
-          Paraguas • Hermoso • Vacaciones • Hace frío • Hace calor • Estoy perdido
-        </div>
-        <button class="btn-start-deck" onclick="startSpeechDeck('q17', ['Paraguas', 'Hermoso', 'Vacaciones', 'Hace frío', 'Hace calor', 'Estoy perdido'])">🎙️ Iniciar Rodada 2</button>
-      </div>
+      <div class="question-text">17. Combine os pares (Clima e Viagem): Toque na palavra em português e na correspondente em espanhol:</div>
+      <div id="pairs-container-q17"></div>
     </div>
 
-    <!-- EXERCÍCIO 18 (CARDS DE FALA 3: RESTAURANTE E OBJETOS) -->
+    <!-- EXERCÍCIO 18 (DUPLAS DE PALAVRAS 3: RESTAURANTE E OBJETOS) -->
     <div class="exercise-card" id="q18">
-      <div class="question-text">18. Pronúncia Rápida 3 (Restaurante e Objetos): Fale cada palavra em espanhol:</div>
-      <div class="auto-speech-box" id="deck-box-q18">
-        <div class="speech-card-counter">6 Cards • Troca Automática</div>
-        <div style="font-size:13px; font-weight:700; color:#5c677d; text-align:center;">
-          Restaurante • Cuchara • Tenedor • Cuchillo • Mesa • Autobús
-        </div>
-        <button class="btn-start-deck" onclick="startSpeechDeck('q18', ['Restaurante', 'Cuchara', 'Tenedor', 'Cuchillo', 'Mesa', 'Autobús'])">🎙️ Iniciar Rodada 3</button>
-      </div>
+      <div class="question-text">18. Combine os pares (Restaurante e Objetos): Ligue cada item ao seu nome em espanhol:</div>
+      <div id="pairs-container-q18"></div>
     </div>
 
   </div>
@@ -355,7 +340,7 @@
       <div style="font-size: 60px;">🏆</div>
       <div style="font-size: 26px; font-weight: 900; color: #2ec4b6; margin-top: 10px;">¡Excelente Trabalho!</div>
       <p style="font-size: 14px; font-weight: 700; color: #6c757d; margin-top: 8px;">
-        Você completou todos os 18 exercícios e treinou sua pronúncia!
+        Você completou todos os 18 exercícios e treinou seu vocabulário e pronúncia!
       </p>
       <div style="margin-top: 15px; background: #eef4f8; padding: 12px; border-radius: 12px; font-weight: 800; color: #ffb703;">
         🌟 +100 XP Ganhos | Progresso Salvo
@@ -461,10 +446,6 @@
     function startVoiceRecognition(expectedText, btnId, statusId, qId) {
       if (completedQuestions.has(qId)) return;
 
-      // Encerra qualquer deck automático ativo antes de ouvir um card individual
-      cleanupSpeechEngines();
-      activeDeck = null;
-
       palavraEsperadaAtual = expectedText;
       btnIdAtual = btnId;
       statusIdAtual = statusId;
@@ -504,11 +485,7 @@
     }
 
     function receberTextoVoz(textoOuvido) {
-      if (activeDeck && activeDeck.awaitingSpeech) {
-        handleDeckResult(textoOuvido, activeDeck.sessionId);
-      } else {
-        processarResultadoVoz(textoOuvido);
-      }
+      processarResultadoVoz(textoOuvido);
     }
 
     function processarResultadoVoz(transcript) {
@@ -569,7 +546,6 @@
     }
 
     function exitLesson() {
-      cleanupSpeechEngines();
       if (completedQuestions.size > 0) {
         saveUserProgress(completedQuestions.size * 10);
       }
@@ -979,212 +955,162 @@
 
     window.addEventListener('load', iniciarExerciciosDialogo);
 
-    // 6. CARDS DE FALA DE TROCA AUTOMÁTICA (COMPATÍVEL COM APP INVENTOR E NAVEGADOR)
-    let activeDeck = null;
-    let currentRecognition = null;
-    let deckTimer = null;
-    let listenSessionCounter = 0;
+    // 6. EXERCÍCIOS DE DUPLAS DE PALAVRAS (COMBINAR PARES PORTUGUÊS <-> ESPANHOL)
+    const configPares = {
+      q16: [
+        { id: 'p1', pt: 'Olá', es: 'Hola' },
+        { id: 'p2', pt: 'Muito prazer', es: 'Mucho gusto' },
+        { id: 'p3', pt: 'Muito obrigado', es: 'Muchas gracias' },
+        { id: 'p4', pt: 'Meu nome é', es: 'Me llamo' },
+        { id: 'p5', pt: 'Até mais', es: 'Hasta luego' }
+      ],
+      q17: [
+        { id: 'p1', pt: 'Guarda-chuva', es: 'Paraguas' },
+        { id: 'p2', pt: 'Bonito', es: 'Hermoso' },
+        { id: 'p3', pt: 'Férias', es: 'Vacaciones' },
+        { id: 'p4', pt: 'Frio', es: 'Frío' },
+        { id: 'p5', pt: 'Estou perdido', es: 'Estoy perdido' }
+      ],
+      q18: [
+        { id: 'p1', pt: 'Restaurante', es: 'Restaurante' },
+        { id: 'p2', pt: 'Colher', es: 'Cuchara' },
+        { id: 'p3', pt: 'Garfo', es: 'Tenedor' },
+        { id: 'p4', pt: 'Faca', es: 'Cuchillo' },
+        { id: 'p5', pt: 'Ônibus', es: 'Autobús' }
+      ]
+    };
 
-    function cleanupSpeechEngines() {
-      if (deckTimer) {
-        clearTimeout(deckTimer);
-        deckTimer = null;
+    const estadoPares = {};
+
+    function embaralharLista(lista) {
+      const copia = [...lista];
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
       }
-      if (currentRecognition) {
-        try {
-          currentRecognition.onresult = null;
-          currentRecognition.onerror = null;
-          currentRecognition.onend = null;
-          currentRecognition.abort();
-        } catch (e) {}
-        currentRecognition = null;
-      }
-      if ('speechSynthesis' in window) {
-        try { window.speechSynthesis.cancel(); } catch (e) {}
-      }
+      return copia;
     }
 
-    function startSpeechDeck(qId, wordList) {
-      if (completedQuestions.has(qId)) return;
-      cleanupSpeechEngines();
+    function iniciarExerciciosPares() {
+      Object.keys(configPares).forEach((qId) => {
+        const container = document.getElementById(`pairs-container-${qId}`);
+        if (!container) return;
 
-      activeDeck = {
-        qId: qId,
-        queue: wordList.map(w => ({ word: w, isRetry: false })),
-        index: 0,
-        attemptsOnCurrent: 0,
-        hits: 0,
-        misses: 0,
-        awaitingSpeech: false,
-        sessionId: 0
-      };
+        const pares = configPares[qId];
+        estadoPares[qId] = {
+          selPt: null,
+          selEs: null,
+          acertos: 0,
+          total: pares.length,
+          bloqueado: false
+        };
 
-      renderSpeechCard();
-      deckTimer = setTimeout(() => triggerDeckListen(), 600);
+        const listaPt = embaralharLista(pares);
+        const listaEs = embaralharLista(pares);
+
+        container.innerHTML = `
+          <div class="pairs-columns-header">
+            <div class="pairs-col-label">🇧🇷 Português</div>
+            <div class="pairs-col-label">🇪🇸 Español</div>
+          </div>
+          <div class="pairs-grid">
+            <div class="pairs-col" id="col-pt-${qId}"></div>
+            <div class="pairs-col" id="col-es-${qId}"></div>
+          </div>
+          <div class="pairs-status" id="pairs-status-${qId}">0 de ${pares.length} pares combinados</div>
+        `;
+
+        const colPt = document.getElementById(`col-pt-${qId}`);
+        const colEs = document.getElementById(`col-es-${qId}`);
+
+        listaPt.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.className = 'pair-btn';
+          btn.dataset.pairId = item.id;
+          btn.textContent = item.pt;
+          btn.onclick = () => selecionarItemPar(qId, 'pt', btn, item);
+          colPt.appendChild(btn);
+        });
+
+        listaEs.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.className = 'pair-btn';
+          btn.dataset.pairId = item.id;
+          btn.textContent = item.es;
+          btn.onclick = () => selecionarItemPar(qId, 'es', btn, item);
+          colEs.appendChild(btn);
+        });
+      });
     }
 
-    function renderSpeechCard() {
-      if (!activeDeck) return;
-      const box = document.getElementById(`deck-box-${activeDeck.qId}`);
-      const currentItem = activeDeck.queue[activeDeck.index];
-      const retryBadge = currentItem.isRetry ? ' (Tentativa Final)' : '';
+    function selecionarItemPar(qId, lado, btn, item) {
+      const estado = estadoPares[qId];
+      if (completedQuestions.has(qId) || estado.bloqueado || btn.classList.contains('matched')) return;
 
-      box.className = 'auto-speech-box';
-      box.innerHTML = `
-        <div class="speech-card-counter">Card ${activeDeck.index + 1} de ${activeDeck.queue.length}${retryBadge}</div>
-        <div class="speech-target-big">${currentItem.word.toUpperCase()}</div>
-        <button class="mic-btn" id="deck-mic-${activeDeck.qId}" onclick="manualTriggerDeckListen()">🎙️</button>
-        <div class="speech-status-msg" id="deck-status-${activeDeck.qId}">Prepare-se...</div>
-      `;
-    }
-
-    function manualTriggerDeckListen() {
-      if (!activeDeck || activeDeck.awaitingSpeech) return;
-      if (deckTimer) clearTimeout(deckTimer);
-      triggerDeckListen();
-    }
-
-    function triggerDeckListen() {
-      if (!activeDeck) return;
-      const currentItem = activeDeck.queue[activeDeck.index];
-      const micBtn = document.getElementById(`deck-mic-${activeDeck.qId}`);
-      const statusEl = document.getElementById(`deck-status-${activeDeck.qId}`);
-
-      listenSessionCounter++;
-      const sessionId = listenSessionCounter;
-      activeDeck.sessionId = sessionId;
-      activeDeck.awaitingSpeech = true;
-
-      if (micBtn) micBtn.classList.add('listening');
-      if (statusEl) {
-        statusEl.style.color = '#e63946';
-        statusEl.textContent = `🎙️ Ouvindo... Diga "${currentItem.word.toUpperCase()}"`;
+      if (lado === 'es') {
+        hablarPronunciacionCorrecta(item.es);
       }
 
-      // Ponte nativa do App Inventor / Kodular
-      if (window.AppInventor) {
-        window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
-        return;
-      }
-
-      // Fallback para navegador web
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        setTimeout(() => handleDeckResult(currentItem.word, sessionId), 700);
-        return;
-      }
-
-      const rec = new SpeechRecognition();
-      rec.lang = 'es-ES';
-      currentRecognition = rec;
-
-      rec.onresult = (event) => {
-        if (micBtn) micBtn.classList.remove('listening');
-        handleDeckResult(event.results[0][0].transcript, sessionId);
-      };
-
-      rec.onerror = () => {
-        if (micBtn) micBtn.classList.remove('listening');
-        handleDeckResult('', sessionId);
-      };
-
-      rec.start();
-    }
-
-    function normalizarTextoDeck(txt) {
-      return txt.toLowerCase().trim()
-        .replace(/[¿?¡!.,]/g, '')
-        .replace(/[áéíóú]/g, m => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' }[m]))
-        .replace(/ñ/g, 'n')
-        .replace(/\bestou\b/g, 'estoy')
-        .replace(/\bola\b/g, 'hola')
-        .replace(/\bgrasias\b/g, 'gracias');
-    }
-
-    function handleDeckResult(transcript, sessionId) {
-      if (!activeDeck || !activeDeck.awaitingSpeech || activeDeck.sessionId !== sessionId) return;
-      activeDeck.awaitingSpeech = false;
-
-      const currentItem = activeDeck.queue[activeDeck.index];
-      const box = document.getElementById(`deck-box-${activeDeck.qId}`);
-      const statusEl = document.getElementById(`deck-status-${activeDeck.qId}`);
-      const micBtn = document.getElementById(`deck-mic-${activeDeck.qId}`);
-      if (micBtn) micBtn.classList.remove('listening');
-
-      const targetNorm = normalizarTextoDeck(currentItem.word);
-      const spokenNorm = normalizarTextoDeck(transcript || '');
-
-      if (spokenNorm !== '' && (spokenNorm.includes(targetNorm) || (targetNorm.includes(spokenNorm) && spokenNorm.length >= 3))) {
-        activeDeck.hits++;
-        box.classList.add('hit');
-        if (statusEl) {
-          statusEl.style.color = '#1b7f75';
-          statusEl.textContent = `✅ ¡Muy bien! ("${transcript}")`;
-        }
-        playCorrectTone();
-        deckTimer = setTimeout(() => advanceDeckCard(), 900);
+      if (lado === 'pt') {
+        if (estado.selPt) estado.selPt.btn.classList.remove('selected');
+        estado.selPt = { btn, item };
+        btn.classList.add('selected');
       } else {
-        activeDeck.attemptsOnCurrent++;
-        box.classList.add('miss');
+        if (estado.selEs) estado.selEs.btn.classList.remove('selected');
+        estado.selEs = { btn, item };
+        btn.classList.add('selected');
+      }
 
-        if (activeDeck.attemptsOnCurrent < 2 && !currentItem.isRetry) {
-          if (statusEl) {
-            statusEl.style.color = '#e63946';
-            statusEl.textContent = transcript
-              ? `Ouvi "${transcript}". Tente novamente!`
-              : 'Não ouvi bem. Tente novamente!';
+      if (estado.selPt && estado.selEs) {
+        const btnPt = estado.selPt.btn;
+        const btnEs = estado.selEs.btn;
+        const acertou = estado.selPt.item.id === estado.selEs.item.id;
+        const palavraEs = estado.selEs.item.es;
+
+        estado.selPt = null;
+        estado.selEs = null;
+
+        if (acertou) {
+          btnPt.classList.remove('selected');
+          btnEs.classList.remove('selected');
+          btnPt.classList.add('matched');
+          btnEs.classList.add('matched');
+          btnPt.disabled = true;
+          btnEs.disabled = true;
+
+          estado.acertos++;
+          playCorrectTone();
+          hablarPronunciacionCorrecta(palavraEs);
+
+          const statusEl = document.getElementById(`pairs-status-${qId}`);
+          if (estado.acertos >= estado.total) {
+            if (statusEl) {
+              statusEl.style.color = '#1b7f75';
+              statusEl.textContent = '✅ ¡Excelente! Todos os pares combinados!';
+            }
+            completedQuestions.add(qId);
+            updateProgressUI();
+            checkCompletion();
+          } else if (statusEl) {
+            statusEl.textContent = `${estado.acertos} de ${estado.total} pares combinados`;
           }
-          deckTimer = setTimeout(() => {
-            box.classList.remove('miss');
-            triggerDeckListen();
-          }, 2200);
         } else {
-          // Se errar e ainda não foi reenviado para o fim da fila, joga uma vez para o final
-          if (!currentItem.isRetry) {
-            activeDeck.queue.push({ word: currentItem.word, isRetry: true });
-          } else {
-            activeDeck.misses++;
-          }
-          if (statusEl) {
-            statusEl.style.color = '#e63946';
-            statusEl.textContent = `⏭️ Pulando "${currentItem.word}" para o final...`;
-          }
-          deckTimer = setTimeout(() => advanceDeckCard(), 1000);
+          estado.bloqueado = true;
+          btnPt.classList.remove('selected');
+          btnEs.classList.remove('selected');
+          btnPt.classList.add('wrong-flash');
+          btnEs.classList.add('wrong-flash');
+
+          setTimeout(() => {
+            btnPt.classList.remove('wrong-flash');
+            btnEs.classList.remove('wrong-flash');
+            estado.bloqueado = false;
+          }, 550);
         }
       }
     }
 
-    function advanceDeckCard() {
-      if (!activeDeck) return;
-      activeDeck.index++;
-      activeDeck.attemptsOnCurrent = 0;
-
-      if (activeDeck.index < activeDeck.queue.length) {
-        renderSpeechCard();
-        deckTimer = setTimeout(() => triggerDeckListen(), 600);
-      } else {
-        finishSpeechDeck();
-      }
-    }
-
-    function finishSpeechDeck() {
-      if (!activeDeck) return;
-      const qId = activeDeck.qId;
-      const hits = activeDeck.hits;
-      const box = document.getElementById(`deck-box-${qId}`);
-
-      box.className = 'auto-speech-box hit';
-      box.innerHTML = `
-        <div style="font-size:32px;">🎉</div>
-        <div style="font-size:16px; font-weight:900; color:#1b7f75;">Rodada Concluída!</div>
-        <div style="font-size:13px; font-weight:700; color:#0b2545;">Você acertou ${hits} cards nesta rodada.</div>
-      `;
-
-      completedQuestions.add(qId);
-      updateProgressUI();
-      checkCompletion();
-      activeDeck = null;
-    }
+    window.addEventListener('load', iniciarExerciciosPares);
   </script>
 </body>
 </html>
