@@ -53,6 +53,7 @@
     .clickable-img-wrap:active { transform: scale(0.97); }
     .clickable-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
     .img-hint-label { font-size: 13px; font-weight: 800; color: #5c677d; }
+    .img-hint-es { display: inline-block; margin-left: 6px; color: #134074; background: #d0e1f9; padding: 1px 7px; border-radius: 6px; font-weight: 900; }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .modal-overlay.show { display: flex; opacity: 1; visibility: visible; }
@@ -437,23 +438,31 @@
       }
     }
 
-    // 3. RECONHECIMENTO DE VOZ (INTACTO - EXATAMENTE COMO FUNCIONA NO APP)
+        // 3. RECONHECIMENTO DE VOZ (COM "AGUARDE" EM CINZA E DICA BILÍNGUE AO ERRAR)
     let palavraEsperadaAtual = '';
     let btnIdAtual = '';
     let statusIdAtual = '';
     let qIdAtual = '';
+    let timerErroVoz = null;
 
     function startVoiceRecognition(expectedText, btnId, statusId, qId) {
       if (completedQuestions.has(qId)) return;
+
+      if (timerErroVoz) {
+        clearTimeout(timerErroVoz);
+        timerErroVoz = null;
+      }
 
       palavraEsperadaAtual = expectedText;
       btnIdAtual = btnId;
       statusIdAtual = statusId;
       qIdAtual = qId;
 
+      const statusEl = document.getElementById(statusId);
+
       if (window.AppInventor) {
-        document.getElementById(statusId).innerHTML = "🎙️ Ouvindo... Fale agora!";
-        document.getElementById(statusId).style.color = "#ffb703";
+        statusEl.textContent = "🎙️ Ouvindo... Fale agora!";
+        statusEl.style.color = "#ffb703";
         window.AppInventor.setWebViewString("OuvirVoz_" + Date.now());
         return;
       }
@@ -469,7 +478,8 @@
 
       const micBtn = document.getElementById(btnId);
       micBtn.classList.add('listening');
-      document.getElementById(statusId).innerHTML = `Ouvindo... Diga "${palavraEsperadaAtual.toUpperCase()}"`;
+      statusEl.style.color = "#5c677d";
+      statusEl.textContent = `🎙️ Ouvindo... Diga "${palavraEsperadaAtual.toUpperCase()}"`;
 
       recognition.start();
 
@@ -480,7 +490,7 @@
 
       recognition.onerror = function() {
         micBtn.classList.remove('listening');
-        processarResultadoVoz(""); 
+        processarResultadoVoz("");
       };
     }
 
@@ -488,49 +498,77 @@
       processarResultadoVoz(textoOuvido);
     }
 
+    function revelarTraducaoEspanholNaImagem(qId, palavraEs) {
+      const card = document.getElementById(qId);
+      if (!card) return;
+      const hintLabel = card.querySelector('.img-hint-label');
+      if (!hintLabel || hintLabel.dataset.revealed === 'true') return;
+
+      hintLabel.dataset.revealed = 'true';
+      hintLabel.innerHTML += ` | Espanhol: <span class="img-hint-es">${palavraEs.toUpperCase()}</span>`;
+    }
+
     function processarResultadoVoz(transcript) {
       if (!qIdAtual || completedQuestions.has(qIdAtual)) return;
 
       const statusText = document.getElementById(statusIdAtual);
       const micBtn = document.getElementById(btnIdAtual);
+      const qIdLocal = qIdAtual;
+      const esperadaLocal = palavraEsperadaAtual;
 
-      let normTarget = palavraEsperadaAtual.toLowerCase().trim()
-        .replace(/[¿?¡!.,]/g, '')
-        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]));
-        
-      let normTranscript = transcript.toLowerCase().trim()
+      let normTarget = esperadaLocal.toLowerCase().trim()
         .replace(/[¿?¡!.,]/g, '')
         .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
-        .replace(/\bestou\b/g, "estoy").replace(/\bola\b/g, "hola")
-        .replace(/\bdise\b/g, "dice").replace(/\bgrasias\b/g, "gracias");
+        .replace(/ñ/g, 'n');
 
-      if (transcript !== "" && (normTranscript.includes(normTarget) || normTranscript.includes(normTarget.replace('ñ','n')))) {
-        statusText.innerHTML = `✅ Muito bem! ("${transcript}")`;
+      let normTranscript = (transcript || '').toLowerCase().trim()
+        .replace(/[¿?¡!.,]/g, '')
+        .replace(/[áéíóú]/g, m => ({'á':'a','é':'e','í':'i','ó':'o','ú':'u'}[m]))
+        .replace(/ñ/g, 'n')
+        .replace(/\bestou\b/g, "estoy")
+        .replace(/\bola\b/g, "hola")
+        .replace(/\bdise\b/g, "dice")
+        .replace(/\bgrasias\b/g, "gracias")
+        .replace(/\bsilva\b/g, "silla");
+
+      const acertou = normTranscript !== "" && (
+        normTranscript.includes(normTarget) ||
+        (normTarget === "autobus" && normTranscript.includes("bus"))
+      );
+
+      if (acertou) {
+        if (timerErroVoz) {
+          clearTimeout(timerErroVoz);
+          timerErroVoz = null;
+        }
+        statusText.textContent = `✅ Muito bem! ("${transcript}")`;
         statusText.style.color = "#2ec4b6";
         if (micBtn) micBtn.disabled = true;
-        
-        completedQuestions.add(qIdAtual);
+
+        playCorrectTone();
+        completedQuestions.add(qIdLocal);
         updateProgressUI();
         checkCompletion();
       } else {
-        statusText.innerHTML = transcript 
-          ? `Ouvi "${transcript}". Tente novamente!` 
-          : "Não ouvi bem. Toque no microfone e tente novamente!";
-        statusText.style.color = "#e63946";
+        // Mostra "Aguarde..." em cinza antes de confirmar erro, evitando flash vermelho
+        // enquanto o reconhecimento de voz finaliza a palavra
+        statusText.style.color = "#6c757d";
+        statusText.textContent = "⏳ Aguarde...";
+
+        if (timerErroVoz) clearTimeout(timerErroVoz);
+        timerErroVoz = setTimeout(() => {
+          if (completedQuestions.has(qIdLocal)) return;
+
+          revelarTraducaoEspanholNaImagem(qIdLocal, esperadaLocal);
+          statusText.style.color = "#e63946";
+          statusText.textContent = transcript
+            ? `Ouvi "${transcript}". Tente novamente!`
+            : "Não ouvi bem. Toque no microfone e tente novamente!";
+          timerErroVoz = null;
+        }, 1100);
       }
     }
 
-    function hablarPronunciacionCorrecta(texto) {
-      if (window.AppInventor) {
-        window.AppInventor.setWebViewString("Falar_" + texto);
-      } else if ('speechSynthesis' in window) {
-        const synth = window.speechSynthesis;
-        synth.cancel(); // Interrompe qualquer áudio anterior caso o aluno clique rápido em outro botão
-        const utterThis = new SpeechSynthesisUtterance(texto);
-        utterThis.lang = 'es-ES';
-        synth.speak(utterThis);
-      }
-    }
 
     // 4. CONTROLES DE SAÍDA E SALVAMENTO DE XP
     function confirmExit() {
