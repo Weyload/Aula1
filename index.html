@@ -281,7 +281,7 @@
         </div>
         <div class="img-hint-label">Português: <strong>Ônibus</strong></div>
         <button class="mic-btn" id="mic7-btn" onclick="startVoiceRecognition('autobús', 'mic7-btn', 'status7', 'q10')">🎙️</button>
-        <div id="status7" style="font-size:13px; font-weight:800; color:#6c757d;">Toque no microfone ou na imagem para falar</div>
+               <div id="status7" style="font-size:13px; font-weight:800; color:#6c757d;">Toque no microfone ou na imagem para falar</div>
       </div>
     </div>
 
@@ -393,7 +393,7 @@
             }
 
             digitar();
-            obs.unobserve(elemento); // Garante que digite apenas uma vez
+            obs.unobserve(elemento);
           }
         });
       }, { threshold: 0.3 });
@@ -424,7 +424,6 @@
         btn.classList.add('correct');
         buttons.forEach(b => b.disabled = true);
         
-        // Fala a palavra/frase em espanhol ao clicar na resposta certa
         if (spanishAudioText) {
           hablarPronunciacionCorrecta(spanishAudioText);
         }
@@ -438,7 +437,7 @@
       }
     }
 
-        // 3. RECONHECIMENTO DE VOZ (COM "AGUARDE" EM CINZA E DICA BILÍNGUE AO ERRAR)
+    // 3. RECONHECIMENTO DE VOZ (COM "AGUARDE" EM CINZA E DICA BILÍNGUE AO ERRAR)
     let palavraEsperadaAtual = '';
     let btnIdAtual = '';
     let statusIdAtual = '';
@@ -550,8 +549,6 @@
         updateProgressUI();
         checkCompletion();
       } else {
-        // Mostra "Aguarde..." em cinza antes de confirmar erro, evitando flash vermelho
-        // enquanto o reconhecimento de voz finaliza a palavra
         statusText.style.color = "#6c757d";
         statusText.textContent = "⏳ Aguarde...";
 
@@ -569,6 +566,17 @@
       }
     }
 
+    function hablarPronunciacionCorrecta(texto) {
+      if (window.AppInventor) {
+        window.AppInventor.setWebViewString("Falar_" + texto);
+      } else if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis;
+        synth.cancel();
+        const utterThis = new SpeechSynthesisUtterance(texto);
+        utterThis.lang = 'es-ES';
+        synth.speak(utterThis);
+      }
+    }
 
     // 4. CONTROLES DE SAÍDA E SALVAMENTO DE XP
     function confirmExit() {
@@ -610,6 +618,7 @@
         localStorage.setItem('faleandgo_completed_lessons', JSON.stringify(concluidas));
       }
     }
+
     function saveUserProgress(xpEarned) {
       let currentXP = parseInt(localStorage.getItem('faleandgo_xp') || '0');
       let currentStreak = parseInt(localStorage.getItem('faleandgo_streak') || '1');
@@ -842,7 +851,6 @@
           const stepDiv = document.createElement('div');
           stepDiv.className = 'dialogue-step-block';
           stepDiv.id = `step-${qId}-${idx}`;
-          // Se houver mais de 1 etapa, mostra a próxima apenas após concluir a anterior
           if (idx > 0) stepDiv.style.display = 'none';
 
           stepDiv.innerHTML = `
@@ -964,20 +972,17 @@
         feedback.style.color = '#1b7f75';
         feedback.textContent = `✅ ¡Excelente! "${fraseFinal}"`;
 
-        // Trava os botões desta etapa
         document.querySelectorAll(`#step-${qId}-${idx} button`).forEach(b => b.disabled = true);
         estadoDialogos[qId].etapasConcluidas.add(idx);
 
         playCorrectTone();
         setTimeout(() => hablarPronunciacionCorrecta(fraseFinal), 250);
 
-        // Se existir uma próxima etapa dentro do mesmo card, revela ela
         const proximaEtapa = document.getElementById(`step-${qId}-${idx + 1}`);
         if (proximaEtapa) {
           proximaEtapa.style.display = 'block';
         }
 
-        // Conclui o card inteiro somente quando todas as etapas do card forem vencidas
         if (estadoDialogos[qId].etapasConcluidas.size >= cfg.etapas.length) {
           completedQuestions.add(qId);
           updateProgressUI();
