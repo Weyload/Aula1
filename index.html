@@ -6,6 +6,49 @@
   <title>Aula 2 - Primeras Conversas | Fale&Go</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
+   /* =====================================================================
+       [GUIA DE ESTILO EXTRA] CARTÃO DE VÍDEO DO YOUTUBE + LEGENDA
+       - .demo-video-card: cartão branco com a mesma largura dos exercícios
+       - .video-responsive-wrapper: mantém o vídeo na proporção 16:9 sem distorcer
+       - .demo-video-caption: área da legenda editável abaixo do vídeo
+    ===================================================================== */
+    .demo-video-card {
+      background: #ffffff;
+      color: #0b2545;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      border: 2px solid #e1e9f0;
+    }
+
+    .video-responsive-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* Proporção padrão 16:9 do YouTube */
+      height: 0;
+      background: #000000;
+    }
+
+    .video-responsive-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .demo-video-caption {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0b2545;
+      background: #f8fafc;
+      border-top: 1px solid #e1e9f0;
+      line-height: 1.4;
+      text-align: center;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
     body { background-color: #0b2545; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 40px; }
     .video-intro { background: rgba(46, 196, 182, 0.15); border-left: 4px solid #2ec4b6; padding: 12px 14px; border-radius: 10px; font-size: 14px; font-weight: 800; color: #ffffff; margin: 24px 0 14px; line-height: 1.4; }
@@ -141,18 +184,32 @@
       <span class="vocab-tag">Cuchillo</span>
       <span class="vocab-tag">Muchas gracias</span>
     </div>
-
-    <div class="video-intro">
-      Que tal um vídeo para iniciar uma conversa em Espanhol?
-    </div>
-
-    <!-- VÍDEO -->
-    <div class="video-card">
-      <div class="video-container">
+<!-- =====================================================================
+         [BLOCO DEMONSTRATIVO] VÍDEO DO YOUTUBE + LEGENDA EDITÁVEL
+         - <iframe>: cole o código de incorporar do YouTube dentro de .video-responsive-wrapper
+         - Legenda: edite o texto dentro de <div class="demo-video-caption">
+    ===================================================================== -->
+    <div class="demo-video-card">
+      <div class="video-responsive-wrapper">
         <iframe src="https://www.youtube.com/embed/J9jqfocCaf0?si=fxQm0Kxt0EBbHy6A&amp;start=82" allowfullscreen></iframe>
       </div>
-      <div class="video-info">
-        Conhecendo uma pessoa - Conversação | Canal: Mr. Spanish Channel - Señor Español
+      <div class="demo-video-caption">
+         <span style="color: gray;">Leia e repita em vóz alta em Espanhol.</span></p>
+        <p><span style="color: green;">Português ⬅  ➡ Espanhol</span><br>
+        Guarda Chuva - Paraguas</p>
+        Bonito - Hermoso</p>
+        Férias - Vacaciones</p>
+        Colher - Cuchara</p>
+        Faca - Cuchillo</p>
+        Garfo - Tenedor</p>
+        Frio - Frio</p>
+        Calor - Calor</p>
+        Agradavel - Agradable</p>
+        Onde - Donde</p>
+        Perdido - Perdido</p>
+        Prazer - Encantado</p>
+        Ônibus - Autobús
+        Mesa - Mesa
       </div>
     </div>
 
@@ -163,7 +220,10 @@
         <span class="typed-text" data-texto="Depois do vídeo, vamos memorizar as frases e falar o nome das imagens em espanhol!"></span><span class="cursor"></span>
       </div>
     </div>
-
+<div class="video-intro">
+      Que tal um vídeo para iniciar uma conversa em Espanhol?
+    </div>
+    
     <!-- EXERCÍCIO 1 (ESCOLHA DE PALAVRA) -->
     <div class="exercise-card" id="q1">
       <div class="question-text">1. O que significa: "Hermoso."</div>
